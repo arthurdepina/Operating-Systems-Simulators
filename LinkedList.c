@@ -28,7 +28,7 @@ void insereBlocoAloc (int nProcesso, int end_i, int tam)
     tipo_MemAloc *novo = (tipo_MemAloc *) malloc (sizeof(tipo_MemAloc));
 
     if (!novo) {
-        printf("Erro ao alocar memória.\n");
+        printf("Error. FAILED MEMORY ALOCATION.\n");
         exit(1);
     }
 
@@ -53,7 +53,7 @@ void insereBlocoMemLivre (int end_i, int tam)
     tipo_MemLivre *novo = (tipo_MemLivre *) malloc (sizeof(tipo_MemLivre));
 
     if (!novo) {
-        printf("Erro ao alocar memória.\n");
+        printf("Error. FAILED MEMORY ALOCATION.\n");
         exit(1);
     }
 
@@ -75,9 +75,9 @@ void insereBlocoMemLivre (int end_i, int tam)
 void exibeMemLivre (void)
 {
     tipo_MemLivre *aux = inicioMemLivre;
-    printf("Memória Livre:\n");
+    printf("Free Memory:\n");
     while (aux) {
-        printf("Endereço: %d, Tamanho> %d\n", aux->End_i, aux->tam);
+        printf("Address: %d, Size: %d\n", aux->End_i, aux->tam);
         aux = aux->prox;
     }
 }
@@ -85,11 +85,11 @@ void exibeMemLivre (void)
 void exibeMemAloc (void)
 {
     tipo_MemAloc *aux = inicioMemAloc;
-    printf("Memória Livre:\n");
+    printf("Free Memory:\n");
     while (aux) {
-        printf("NProcesso: %d, Endereço: %d, Tamanho: %d\n", aux->NProcesso,
-                                                             aux->End_i,
-                                                             aux->tam);
+        printf("NProcess: %d, Address: %d, Size: %d\n", aux->NProcesso,
+                                                        aux->End_i,
+                                                        aux->tam);
         aux = aux->prox;
     }
 }
