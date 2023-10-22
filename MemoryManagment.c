@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "LinkedList.c"
 
-void finalizProcesso (int n)
+void finalizaProcesso (int n)
 {
 
 }
