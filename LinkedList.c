@@ -27,11 +27,6 @@ void insereBlocoAloc (int nProcesso, int end_i, int tam)
 {
     tipo_MemAloc *novo = (tipo_MemAloc *) calloc (tam, sizeof(tipo_MemAloc));
 
-    if (!novo) {
-        printf("Error. FAILED MEMORY ALOCATION.\n");
-        exit(1);
-    }
-
     novo->NProcesso = nProcesso;
     novo->End_i     = end_i;
     novo->tam       = tam;
@@ -51,11 +46,6 @@ void insereBlocoAloc (int nProcesso, int end_i, int tam)
 void insereBlocoMemLivre (int end_i, int tam)
 {
     tipo_MemLivre *novo = (tipo_MemLivre *) calloc (tam, sizeof(tipo_MemAloc));
-
-    if (!novo) {
-        printf("Error. FAILED MEMORY ALOCATION.\n");
-        exit(1);
-    }
 
     novo->End_i = end_i;
     novo->tam   = tam;
@@ -101,9 +91,18 @@ int alocaMemoria (int nProcesso, int Tam)
 }
 
 /* Verifica se há espaço de memória disponível */
-int buscaEspacoDisp (int Tam)
+int buscaEspacoDisp ()
 {
+    int total_livre = 0;
+    tipo_MemLivre *atual = inicioMemLivre;
 
+    while (atual)
+    {
+        total_livre += atual->tam;
+        atual = atual->prox;
+    }
+
+    return total_livre;
 }
 
 void organizaBlocoMemLivre (void)

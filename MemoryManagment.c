@@ -5,10 +5,12 @@
 
 int main()
 {
+    inicia();
+
     int mem_disp;
     bool exec = true;
 
-    printf("Quantidade de memória (KB) disponível? ");
+    printf("\nQuantidade de memória (KB) disponível? ");
     scanf("%d", &mem_disp);
     insereBlocoMemLivre(0, mem_disp);
 
@@ -32,20 +34,22 @@ int main()
              * Se houver memória diponível suficiente
              *      aloca e retorna que a memória foi alocada com sucesso
              * Se nao
-             *      Informa que ha memória diponível suficiente
-             *      Informa quanta memória diponível há */
+             *      Informa que nao ha memória diponível suficiente */
             int n_processo;
             int tam_processo;
             printf("Número do processo? ");
             scanf("%d", &n_processo);
             printf("\nMemória necessária para o processo? ");
             scanf("%d", &tam_processo); printf("\n");
-            if (buscaEspacoDisp) {
-                alocaMemoria(n_processo, tam_processo);
+
+            int disponivel = buscaEspacoDisp(tam_processo);
+
+            if (disponivel >= tam_processo) {
+                insereBlocoAloc(n_processo, 0, tam_processo);
                 printf("Programa Inserido Com Sucesso\n");
             } else {
                 printf("Não foi possível alocar o processo.\n");
-                printf("Apenas %d KB de memória disponível.\n", quantMemoriaDisp());
+                printf("Há apenas %d KB de memória disponível.\n", disponivel);
             }
             break;
         case 2:
