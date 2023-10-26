@@ -111,7 +111,7 @@ void organizaBlocoMemLivre (void)
 
 }
 
-void finalizaProcesso(void)
+void finalizaProcesso(int n)
 {
 
 }
@@ -119,4 +119,21 @@ void finalizaProcesso(void)
 void liberaLista (void)
 {
     
+}
+
+// Extras
+
+int quantMemoriaDisp () 
+{
+
+}
+
+int quantMemoriaOcup ()
+{
+    
+}
+
+int buscaProcesso ()
+{
+
 }

@@ -8,15 +8,17 @@ int main()
     int mem_disp;
     bool exec = true;
 
-    printf("Quantidade de memória disponível? ");
+    insereBlocoMemLivre(0, mem_disp);
+
+    printf("Quantidade de memória (KB) disponível? ");
     scanf("%d", &mem_disp);
     while(exec)
     {
         int opcao_selecionada = 0;
         printf("\nMENU\n");
-        printf("1 - Alocar Memoria Para Processo\n");
-        printf("2 - Liberar Memoria de Processo\n");
-        printf("3 - Mostrar Memoria Disponivel\n");
+        printf("1 - Inserir Processo\n");
+        printf("2 - Encerrar Processo\n");
+        printf("3 - Mostrar Memoria Livre\n");
         printf("4 - Mostrar Memoria Alocada\n");
         printf("5 - Sair\n");
         printf("Selecione: ");
@@ -26,22 +28,41 @@ int main()
         case 1:
             /* Pergunta quanta memória deseja alocar 
              * Verifica se há memória disponível suficiente
-             * Se houver memíria diponível suficiente
+             * Se houver memória diponível suficiente
              *      aloca e retorna que a memória foi alocada com sucesso
              * Se nao
              *      Informa que ha memória diponível suficiente
              *      Informa quanta memória diponível há*/
+            int n_processo;
+            int tam_processo;
+            printf("Número do processo? ");
+            scanf("%d", &n_processo);
+            printf("\nMemória necessária para o processo? ");
+            scanf("%d", &tam_processo); printf("\n");
+            if (buscaEspacoDisp) {
+                alocaMemoria(n_processo, tam_processo);
+                printf("Programa Inserido Com Sucesso\n");
+            } else {
+                printf("Não foi possível alocar o processo.\n");
+                printf("Apenas %d KB de memória disponível.\n", quantMemoriaDisp());
+            }
             break;
         case 2:
             /* Libera memória do processo selecionado.
              * Se o processo não existe, informa o usuário. */
+            int n_processo;
+            printf("Deseja encerrar qual processo? ");
+            scanf("%d", &n_processo);
+            finalizaProcesso(n_processo);
             break;
         case 3:
             /* Mostra memória disponível */
+            exibeMemLivre();
             break;
         case 4:
             /*Mostra memória ocupada*/
-            break;
+            exibeMemAloc();
+            break; 
         case 5:
             printf("\nPrograma Finalizado\n\n");
             exec = false;
