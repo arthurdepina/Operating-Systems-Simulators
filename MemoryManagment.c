@@ -8,10 +8,10 @@ int main()
     int mem_disp;
     bool exec = true;
 
-    insereBlocoMemLivre(0, mem_disp);
-
     printf("Quantidade de memória (KB) disponível? ");
     scanf("%d", &mem_disp);
+    insereBlocoMemLivre(0, mem_disp);
+
     while(exec)
     {
         int opcao_selecionada = 0;
@@ -20,7 +20,8 @@ int main()
         printf("2 - Encerrar Processo\n");
         printf("3 - Mostrar Memoria Livre\n");
         printf("4 - Mostrar Memoria Alocada\n");
-        printf("5 - Sair\n");
+        printf("5 - Exibir Situação da Memória\n");
+        printf("6 - Sair\n");
         printf("Selecione: ");
         scanf("%d", &opcao_selecionada); printf("\n");
         switch (opcao_selecionada)
@@ -32,7 +33,7 @@ int main()
              *      aloca e retorna que a memória foi alocada com sucesso
              * Se nao
              *      Informa que ha memória diponível suficiente
-             *      Informa quanta memória diponível há*/
+             *      Informa quanta memória diponível há */
             int n_processo;
             int tam_processo;
             printf("Número do processo? ");
@@ -50,7 +51,6 @@ int main()
         case 2:
             /* Libera memória do processo selecionado.
              * Se o processo não existe, informa o usuário. */
-            int n_processo;
             printf("Deseja encerrar qual processo? ");
             scanf("%d", &n_processo);
             finalizaProcesso(n_processo);
@@ -64,6 +64,10 @@ int main()
             exibeMemAloc();
             break; 
         case 5:
+            exibeMemLivre();
+            exibeMemAloc();
+            break;
+        case 6:
             printf("\nPrograma Finalizado\n\n");
             exec = false;
             break;

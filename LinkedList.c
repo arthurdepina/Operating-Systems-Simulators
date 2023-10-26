@@ -75,7 +75,7 @@ void insereBlocoMemLivre (int end_i, int tam)
 void exibeMemLivre (void)
 {
     tipo_MemLivre *aux = inicioMemLivre;
-    printf("Free Memory:\n");
+    printf("Memória Livre:\n");
     while (aux) {
         printf("Address: %d, Size: %d\n", aux->End_i, aux->tam);
         aux = aux->prox;
@@ -85,7 +85,7 @@ void exibeMemLivre (void)
 void exibeMemAloc (void)
 {
     tipo_MemAloc *aux = inicioMemAloc;
-    printf("Free Memory:\n");
+    printf("Memória Alocada:\n");
     while (aux) {
         printf("NProcess: %d, Address: %d, Size: %d\n", aux->NProcesso,
                                                         aux->End_i,
