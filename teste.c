@@ -19,7 +19,7 @@ int main ()
     alocaMemoria(3, 100);
     exibeMemLivre();
     exibeMemAloc();
-    finalizaProcesso(1);
+    finalizaProcesso(3);
     exibeMemLivre();
     exibeMemAloc();
 

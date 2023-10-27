@@ -132,11 +132,14 @@ void finalizaProcesso(int n)
         if (atual->NProcesso == n) {
             insereBlocoMemLivre(atual->End_i, atual->tam);
             inicioMemAloc = atual->prox;
+            free(atual);
             return;
         }
         if (atual->prox->NProcesso == n) {
             insereBlocoMemLivre(atual->prox->End_i, atual->prox->tam);
+            tipo_MemAloc *apagar = atual->prox;
             atual->prox = atual->prox->prox;
+            free(apagar);
             return;
         }
         atual = atual->prox;
