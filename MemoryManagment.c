@@ -1,3 +1,13 @@
+/*
+ * TODO:
+ *       [ ] Verificar se é possível alocar para um processo um
+ *           espaço de memória que já está sendo utilizado
+ *       [ ] Testar ordens diferentes para inserção e remoção
+ *           de processos.
+ *       [ ] Verificar se é possível alocar um processo que
+ *           não cabe em nenhum bloco de memória.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -9,6 +19,8 @@ int main()
 
     int mem_disp;
     bool exec = true;
+    int numero_processo;
+    int mem_necessaria;
 
     printf("\nQuantidade de memória (KB) disponível? ");
     scanf("%d", &mem_disp);
@@ -26,54 +38,51 @@ int main()
         printf("6 - Sair\n");
         printf("Selecione: ");
         scanf("%d", &opcao_selecionada); printf("\n");
+
         switch (opcao_selecionada)
         {
         case 1:
-            /* Pergunta quanta memória deseja alocar 
-             * Verifica se há memória disponível suficiente
-             * Se houver memória diponível suficiente
-             *      aloca e retorna que a memória foi alocada com sucesso
-             * Se nao
-             *      Informa que nao ha memória diponível suficiente */
-            int n_processo;
-            int tam_processo;
-            printf("Número do processo? "); scanf("%d", &n_processo);
-            printf("\nMemória necessária para o processo? "); scanf("%d", &tam_processo); printf("\n");
 
-            if (buscaEspacoDisp(tam_processo)) {
-                /* alocaMemoria() chama insereBlocoAloc*/
-                
-                insereBlocoAloc(n_processo, 0, tam_processo);
-                printf("Programa Inserido Com Sucesso\n");
-            } else {
-                printf("Não foi possível alocar o processo.\n");
-            }
+            printf("Número do Processo? ");
+            scanf("%d", &numero_processo); printf("\n");
+            printf("Memória Necessária? ");
+            scanf("%d", &mem_necessaria); printf("\n");
+            alocaMemoria(numero_processo, mem_necessaria);
             break;
 
         case 2:
-            /* Libera memória do processo selecionado.
-             * Se o processo não existe, informa o usuário. */
-            printf("Deseja encerrar qual processo? ");
-            scanf("%d", &n_processo);
-            finalizaProcesso(n_processo);
+
+            printf("Número do Processo? ");
+            scanf("%d", &numero_processo); printf("\n");
+            finalizaProcesso(numero_processo);
+            organizaBlocoMemLivre();
             break;
+
         case 3:
-            /* Mostra memória disponível */
+
             exibeMemLivre();
             break;
+
         case 4:
-            /*Mostra memória ocupada*/
+
             exibeMemAloc();
-            break; 
+            break;
+
         case 5:
+
             exibeMemLivre();
             exibeMemAloc();
             break;
+
         case 6:
+
             printf("\nPrograma Finalizado\n\n");
+            liberaLista();
             exec = false;
             break;
+
         default:
+
             printf("Por favor, selecione uma opção válida\n");
             break;
         }
@@ -81,13 +90,3 @@ int main()
 
     return 0;
 }
-
-
-/*
-    insereBlocoMemLivre(100, 50);
-    insereBlocoMemLivre(150, 30);
-    insereBlocoAloc(1, 200, 10);
-    insereBlocoAloc(2, 210, 20);
-    exibeMemLivre();
-    exibeMemAloc();
-*/

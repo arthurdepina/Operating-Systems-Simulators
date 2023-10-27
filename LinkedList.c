@@ -16,9 +16,10 @@ typedef struct _tipo_MemAloc {
 
 tipo_MemLivre *inicioMemLivre = NULL;
 tipo_MemAloc  *inicioMemAloc  = NULL;
+
 int minimo_bloco_suficiente(int Tam);
 tipo_MemLivre* merge(tipo_MemLivre *a, tipo_MemLivre *b);
-tipo_MemLivre* mergeSort(tipo_MemLivre *head);
+tipo_MemLivre* mergeSort(tipo_MemLivre *head);int buscaEspacoDisp (int Tam);
 
 
 void inicia (void)
@@ -68,7 +69,6 @@ void insereBlocoMemLivre (int end_i, int tam)
 
 void exibeMemLivre (void)
 {
-    printf("\n");
     tipo_MemLivre *aux = inicioMemLivre;
     printf("Memória Livre:\n");
     while (aux) {
@@ -94,6 +94,11 @@ void exibeMemAloc (void)
 /* Aloca bloco de memória para processo*/
 void alocaMemoria (int nProcesso, int Tam)
 {
+    if (!buscaEspacoDisp) {
+        printf("ERRO: Não foi possível alocar memória para esse processo.\n");
+        return;
+    }
+
     int end_mem = minimo_bloco_suficiente(Tam); // endereço do bloco de memória que será alocado
     tipo_MemLivre *atual = inicioMemLivre;
     while (atual) {
@@ -204,6 +209,7 @@ int minimo_bloco_suficiente(int Tam)
     return end_minimo_suf;
 }
 
+/* Merge para ordenar a Lista de Memória Livre*/
 tipo_MemLivre* merge(tipo_MemLivre *a, tipo_MemLivre *b) {
     if (!a)
         return b;
@@ -222,6 +228,7 @@ tipo_MemLivre* merge(tipo_MemLivre *a, tipo_MemLivre *b) {
     return result;
 }
 
+/* Merge Sort para ordenar a Lista de Memória Livre*/
 tipo_MemLivre* mergeSort(tipo_MemLivre *head) {
     if (!head || !head->prox)
         return head;
