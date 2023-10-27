@@ -16,6 +16,7 @@ typedef struct _tipo_MemAloc {
 
 tipo_MemLivre *inicioMemLivre = NULL;
 tipo_MemAloc  *inicioMemAloc  = NULL;
+int minimo_bloco_suficiente(int Tam);
 
 void inicia (void)
 {
@@ -64,12 +65,14 @@ void insereBlocoMemLivre (int end_i, int tam)
 
 void exibeMemLivre (void)
 {
+    printf("\n");
     tipo_MemLivre *aux = inicioMemLivre;
     printf("Memória Livre:\n");
     while (aux) {
-        printf("Address: %d, Size: %d\n", aux->End_i, aux->tam);
+        printf("Address: %d, Size: %d => ", aux->End_i, aux->tam);
         aux = aux->prox;
     }
+    printf("NULL\n");
 }
 
 void exibeMemAloc (void)
@@ -77,26 +80,34 @@ void exibeMemAloc (void)
     tipo_MemAloc *aux = inicioMemAloc;
     printf("Memória Alocada:\n");
     while (aux) {
-        printf("NProcess: %d, Address: %d, Size: %d\n", aux->NProcesso,
-                                                        aux->End_i,
-                                                        aux->tam);
+        printf("NProcess: %d, Address: %d, Size: %d => ", aux->NProcesso,
+                                                            aux->End_i,
+                                                            aux->tam);
         aux = aux->prox;
     }
+    printf("NULL\n");
 }
 
 /* Aloca bloco de memória para processo*/
 void alocaMemoria (int nProcesso, int Tam)
 {
-    // int end_mem = buscaEspacoDisp(-1); // endereço do bloco de memória que será alocado
-    // tipo_MemLivre *atual = inicioMemLivre;
-    // while (atual) {
-    //     if (atual->End_i = end_mem) {
-    //         atual->tam = atual->tam - Tam;
-    //         int novo_end = atual->End_i + atual->tam + Tam;
-    //         // insereBlocoMemLivre();
-    //     }
-    // }
+    int end_mem = minimo_bloco_suficiente(Tam); // endereço do bloco de memória que será alocado
+    // printf("end_mem: %d\n", end_mem);
+    tipo_MemLivre *atual = inicioMemLivre;
+    while (atual) {
+        // printf("end_atual %d\n", atual->End_i);
+        if (atual->End_i == end_mem) {
 
+            int novo_end_aloc  = atual->End_i;
+            insereBlocoAloc(nProcesso, novo_end_aloc, Tam);
+
+            atual->tam   = atual->tam - Tam;
+            atual->End_i = atual->End_i + Tam;
+            printf("CHEGOU\n");
+            return;
+        }
+        atual = atual->prox;
+    }
 }
 
 /* Verifica se há espaço de memória disponível */
@@ -142,7 +153,6 @@ int minimo_bloco_suficiente(int Tam)
         }
         atual = atual->prox;
     }
-    printf("end_minimo_suf: %d\n", end_minimo_suf);
     return end_minimo_suf;
 }
 
