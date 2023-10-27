@@ -17,6 +17,9 @@ typedef struct _tipo_MemAloc {
 tipo_MemLivre *inicioMemLivre = NULL;
 tipo_MemAloc  *inicioMemAloc  = NULL;
 int minimo_bloco_suficiente(int Tam);
+tipo_MemLivre* merge(tipo_MemLivre *a, tipo_MemLivre *b);
+tipo_MemLivre* mergeSort(tipo_MemLivre *head);
+
 
 void inicia (void)
 {
@@ -69,7 +72,7 @@ void exibeMemLivre (void)
     tipo_MemLivre *aux = inicioMemLivre;
     printf("Memória Livre:\n");
     while (aux) {
-        printf("Address: %d, Size: %d => ", aux->End_i, aux->tam);
+        printf("{ Address: %d, Size: %d } => ", aux->End_i, aux->tam);
         aux = aux->prox;
     }
     printf("NULL\n");
@@ -80,9 +83,9 @@ void exibeMemAloc (void)
     tipo_MemAloc *aux = inicioMemAloc;
     printf("Memória Alocada:\n");
     while (aux) {
-        printf("NProcess: %d, Address: %d, Size: %d => ", aux->NProcesso,
-                                                            aux->End_i,
-                                                            aux->tam);
+        printf("{ NProcess: %d, Address: %d, Size: %d } => ", aux->NProcesso,
+                                                              aux->End_i,
+                                                              aux->tam);
         aux = aux->prox;
     }
     printf("NULL\n");
@@ -121,6 +124,7 @@ int buscaEspacoDisp (int Tam)
 
 void organizaBlocoMemLivre (void)
 {
+    inicioMemLivre = mergeSort(inicioMemLivre);
 
 }
 
@@ -168,6 +172,42 @@ int minimo_bloco_suficiente(int Tam)
         atual = atual->prox;
     }
     return end_minimo_suf;
+}
+
+tipo_MemLivre* merge(tipo_MemLivre *a, tipo_MemLivre *b) {
+    if (!a)
+        return b;
+    if (!b)
+        return a;
+
+    tipo_MemLivre *result = NULL;
+
+    if (a->End_i <= b->End_i) {
+        result = a;
+        result->prox = merge(a->prox, b);
+    } else {
+        result = b;
+        result->prox = merge(a, b->prox);
+    }
+    return result;
+}
+
+tipo_MemLivre* mergeSort(tipo_MemLivre *head) {
+    if (!head || !head->prox)
+        return head;
+
+    tipo_MemLivre *middle = head;
+    tipo_MemLivre *fast = head->prox;
+
+    while (fast && fast->prox) {
+        middle = middle->prox;
+        fast = fast->prox->prox;
+    }
+
+    tipo_MemLivre *half = middle->prox;
+    middle->prox = NULL;
+
+    return merge(mergeSort(head), mergeSort(half));
 }
 
 int quantMemoriaDisp () 
