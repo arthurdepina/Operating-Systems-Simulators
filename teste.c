@@ -12,10 +12,14 @@ int main ()
     // alocaMemoria(1234, 300);
     // exibeMemLivre();
     insereBlocoMemLivre(0, 4000);
-    alocaMemoria(1234, 1800);
+    alocaMemoria(1, 1800);
+    // exibeMemLivre();
+    // exibeMemAloc();
+    alocaMemoria(2, 300);
+    alocaMemoria(3, 100);
     exibeMemLivre();
     exibeMemAloc();
-    alocaMemoria(5678, 300);
+    finalizaProcesso(1);
     exibeMemLivre();
     exibeMemAloc();
 

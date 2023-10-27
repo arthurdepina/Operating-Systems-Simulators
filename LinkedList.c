@@ -92,10 +92,8 @@ void exibeMemAloc (void)
 void alocaMemoria (int nProcesso, int Tam)
 {
     int end_mem = minimo_bloco_suficiente(Tam); // endereço do bloco de memória que será alocado
-    // printf("end_mem: %d\n", end_mem);
     tipo_MemLivre *atual = inicioMemLivre;
     while (atual) {
-        // printf("end_atual %d\n", atual->End_i);
         if (atual->End_i == end_mem) {
 
             int novo_end_aloc  = atual->End_i;
@@ -103,7 +101,6 @@ void alocaMemoria (int nProcesso, int Tam)
 
             atual->tam   = atual->tam - Tam;
             atual->End_i = atual->End_i + Tam;
-            printf("CHEGOU\n");
             return;
         }
         atual = atual->prox;
@@ -129,7 +126,21 @@ void organizaBlocoMemLivre (void)
 
 void finalizaProcesso(int n)
 {
+    tipo_MemAloc *atual = inicioMemAloc;
 
+    while (atual) {
+        if (atual->NProcesso == n) {
+            insereBlocoMemLivre(atual->End_i, atual->tam);
+            inicioMemAloc = atual->prox;
+            return;
+        }
+        if (atual->prox->NProcesso == n) {
+            insereBlocoMemLivre(atual->prox->End_i, atual->prox->tam);
+            atual->prox = atual->prox->prox;
+            return;
+        }
+        atual = atual->prox;
+    }
 }
 
 void liberaLista (void)
