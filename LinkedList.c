@@ -87,15 +87,15 @@ void exibeMemAloc (void)
 /* Aloca bloco de memória para processo*/
 void alocaMemoria (int nProcesso, int Tam)
 {
-    int end_mem = buscaEspacoDisp(-1); // endereço do bloco de memória que será alocado
-    tipo_MemLivre *atual = inicioMemLivre;
-    while (atual) {
-        if (atual->End_i = end_mem) {
-            atual->tam = atual->tam - Tam;
-            int novo_end = atual->End_i + atual->tam + Tam;
-            // insereBlocoMemLivre();
-        }
-    }
+    // int end_mem = buscaEspacoDisp(-1); // endereço do bloco de memória que será alocado
+    // tipo_MemLivre *atual = inicioMemLivre;
+    // while (atual) {
+    //     if (atual->End_i = end_mem) {
+    //         atual->tam = atual->tam - Tam;
+    //         int novo_end = atual->End_i + atual->tam + Tam;
+    //         // insereBlocoMemLivre();
+    //     }
+    // }
 
 }
 
