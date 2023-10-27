@@ -164,7 +164,25 @@ void finalizaProcesso(int n)
 
 void liberaLista (void)
 {
-    
+    tipo_MemLivre *atual_livre = inicioMemLivre;
+    tipo_MemLivre *proximo_livre = inicioMemLivre;
+    tipo_MemAloc *atual_aloc = inicioMemAloc;
+    tipo_MemAloc *proximo_aloc = inicioMemAloc;
+
+    while (atual_livre) {
+        proximo_livre = atual_livre->prox;
+        free(atual_livre);
+        atual_livre = proximo_livre;
+    }
+
+    while (atual_aloc) {
+        proximo_aloc = atual_aloc->prox;
+        free(atual_aloc);
+        atual_aloc = proximo_aloc;
+    }
+
+    inicioMemLivre = NULL;
+    inicioMemAloc = NULL;
 }
 
 // Extras

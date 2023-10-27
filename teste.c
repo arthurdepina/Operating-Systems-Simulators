@@ -27,6 +27,7 @@ int main ()
     exibeMemLivre();
     exibeMemAloc();
     printf("\n====\n");
+    liberaLista();
 
     return 0;
 }
