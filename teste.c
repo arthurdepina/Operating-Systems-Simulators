@@ -7,12 +7,13 @@ int main ()
     insereBlocoMemLivre(0, 4000);
     alocaMemoria(1, 1800);
     alocaMemoria(2, 300);
-    alocaMemoria(3, 100);
     exibeMemLivre();
     exibeMemAloc();
-    finalizaProcesso(3);
+    finalizaProcesso(1);
+    organizaBlocoMemLivre();
     exibeMemLivre();
     exibeMemAloc();
+    finalizaProcesso(2);
     organizaBlocoMemLivre();
     exibeMemLivre();
     exibeMemAloc();
