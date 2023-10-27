@@ -125,7 +125,19 @@ int buscaEspacoDisp (int Tam)
 void organizaBlocoMemLivre (void)
 {
     inicioMemLivre = mergeSort(inicioMemLivre);
-
+    tipo_MemLivre *atual = inicioMemLivre;
+    while (atual) {
+        while (atual->prox) {
+            if (atual->End_i + atual->tam == atual->prox->End_i) {
+                atual->tam += atual->prox->tam;
+                tipo_MemLivre *apagar = atual->prox;
+                atual->prox = atual->prox->prox;
+                free(apagar);
+            }
+            else break;
+        }
+        atual = atual->prox;
+    }
 }
 
 void finalizaProcesso(int n)
