@@ -37,21 +37,19 @@ int main()
              *      Informa que nao ha memória diponível suficiente */
             int n_processo;
             int tam_processo;
-            printf("Número do processo? ");
-            scanf("%d", &n_processo);
-            printf("\nMemória necessária para o processo? ");
-            scanf("%d", &tam_processo); printf("\n");
+            printf("Número do processo? "); scanf("%d", &n_processo);
+            printf("\nMemória necessária para o processo? "); scanf("%d", &tam_processo); printf("\n");
 
-            int disponivel = buscaEspacoDisp(tam_processo);
-
-            if (disponivel >= tam_processo) {
+            if (buscaEspacoDisp(tam_processo)) {
+                /* alocaMemoria() chama insereBlocoAloc*/
+                
                 insereBlocoAloc(n_processo, 0, tam_processo);
                 printf("Programa Inserido Com Sucesso\n");
             } else {
                 printf("Não foi possível alocar o processo.\n");
-                printf("Há apenas %d KB de memória disponível.\n", disponivel);
             }
             break;
+
         case 2:
             /* Libera memória do processo selecionado.
              * Se o processo não existe, informa o usuário. */

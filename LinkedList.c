@@ -45,7 +45,7 @@ void insereBlocoAloc (int nProcesso, int end_i, int tam)
 
 void insereBlocoMemLivre (int end_i, int tam)
 {
-    tipo_MemLivre *novo = (tipo_MemLivre *) calloc (tam, sizeof(tipo_MemAloc));
+    tipo_MemLivre *novo = (tipo_MemLivre *) calloc (tam, sizeof(tipo_MemLivre));
 
     novo->End_i = end_i;
     novo->tam   = tam;
@@ -85,24 +85,30 @@ void exibeMemAloc (void)
 }
 
 /* Aloca bloco de memória para processo*/
-int alocaMemoria (int nProcesso, int Tam)
+void alocaMemoria (int nProcesso, int Tam)
 {
+    int end_mem = buscaEspacoDisp(-1); // endereço do bloco de memória que será alocado
+    tipo_MemLivre *atual = inicioMemLivre;
+    while (atual) {
+        if (atual->End_i = end_mem) {
+            atual->tam = atual->tam - Tam;
+            int novo_end = atual->End_i + atual->tam + Tam;
+            // insereBlocoMemLivre();
+        }
+    }
 
 }
 
 /* Verifica se há espaço de memória disponível */
-int buscaEspacoDisp ()
+int buscaEspacoDisp (int Tam)
 {
-    int total_livre = 0;
     tipo_MemLivre *atual = inicioMemLivre;
 
-    while (atual)
-    {
-        total_livre += atual->tam;
+    while (atual) {
+        if (atual->tam >= Tam) return 1;
         atual = atual->prox;
     }
-
-    return total_livre;
+    return 0;
 }
 
 void organizaBlocoMemLivre (void)
@@ -121,6 +127,24 @@ void liberaLista (void)
 }
 
 // Extras
+
+/* Função utilizada para retornar o endereço do
+ * menor bloco de memória suficiente para o processo */
+int minimo_bloco_suficiente(int Tam)
+{
+    tipo_MemLivre *atual  = inicioMemLivre;
+    int minimo_suficiente = atual->tam;
+    int end_minimo_suf    = atual->End_i;
+    while (atual) {
+        if (atual->tam >= Tam && atual->tam < minimo_suficiente) {
+            minimo_suficiente = atual->tam;
+            end_minimo_suf    = atual->End_i;
+        }
+        atual = atual->prox;
+    }
+    printf("end_minimo_suf: %d\n", end_minimo_suf);
+    return end_minimo_suf;
+}
 
 int quantMemoriaDisp () 
 {
