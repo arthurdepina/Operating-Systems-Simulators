@@ -18,9 +18,16 @@ tipo_MemLivre *inicioMemLivre = NULL;
 tipo_MemAloc  *inicioMemAloc  = NULL;
 
 int minimo_bloco_suficiente(int Tam, int End);
-tipo_MemLivre* merge(tipo_MemLivre *a, tipo_MemLivre *b);
-tipo_MemLivre* mergeSort(tipo_MemLivre *head);int buscaEspacoDisp (int Tam);
 
+int buscaEspacoDisp (int Tam);
+
+tipo_MemLivre* merge(tipo_MemLivre *a, tipo_MemLivre *b);
+tipo_MemLivre* mergeSort(tipo_MemLivre *head);
+
+tipo_MemAloc* merge_aloc(tipo_MemAloc *a, tipo_MemAloc *b);
+tipo_MemAloc* mergeSort_aloc(tipo_MemAloc *head);
+
+void organizaBlocoMemAloc();
 
 void inicia (void)
 {
@@ -112,6 +119,7 @@ void alocaMemoria (int nProcesso, int Tam)
 
             atual->tam   = atual->tam - Tam;
             atual->End_i = atual->End_i + Tam;
+            organizaBlocoMemAloc();
             return;
         }
         atual = atual->prox;
@@ -251,6 +259,49 @@ tipo_MemLivre* mergeSort(tipo_MemLivre *head) {
     middle->prox = NULL;
 
     return merge(mergeSort(head), mergeSort(half));
+}
+
+// Adaptando as funções para tipo_MemAloc:
+
+tipo_MemAloc* merge_aloc(tipo_MemAloc *a, tipo_MemAloc *b) {
+    if (!a)
+        return b;
+    if (!b)
+        return a;
+
+    tipo_MemAloc *result = NULL;
+
+    if (a->End_i <= b->End_i) {
+        result = a;
+        result->prox = merge_aloc(a->prox, b);
+    } else {
+        result = b;
+        result->prox = merge_aloc(a, b->prox);
+    }
+    return result;
+}
+
+tipo_MemAloc* mergeSort_aloc(tipo_MemAloc *head) {
+    if (!head || !head->prox)
+        return head;
+
+    tipo_MemAloc *middle = head;
+    tipo_MemAloc *fast = head->prox;
+
+    while (fast && fast->prox) {
+        middle = middle->prox;
+        fast = fast->prox->prox;
+    }
+
+    tipo_MemAloc *half = middle->prox;
+    middle->prox = NULL;
+
+    return merge_aloc(mergeSort_aloc(head), mergeSort_aloc(half));
+}
+
+void organizaBlocoMemAloc()
+{
+    inicioMemAloc = mergeSort_aloc(inicioMemAloc);
 }
 
 int quantMemoriaDisp () 
