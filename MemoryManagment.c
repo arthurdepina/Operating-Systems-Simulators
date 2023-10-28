@@ -6,6 +6,9 @@
  *           de processos.
  *       [ ] Verificar se é possível alocar um processo que
  *           não cabe em nenhum bloco de memória.
+ *       [O] Verificar a alocação de um processo que não cabe
+ *           no primeiro espaço livre, mas cabe em algum outro
+ *       [ ] Ordenação da memória alocada
  *       [ ] Error Catching
 */
 

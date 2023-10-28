@@ -17,7 +17,7 @@ typedef struct _tipo_MemAloc {
 tipo_MemLivre *inicioMemLivre = NULL;
 tipo_MemAloc  *inicioMemAloc  = NULL;
 
-int minimo_bloco_suficiente(int Tam);
+int minimo_bloco_suficiente(int Tam, int End);
 tipo_MemLivre* merge(tipo_MemLivre *a, tipo_MemLivre *b);
 tipo_MemLivre* mergeSort(tipo_MemLivre *head);int buscaEspacoDisp (int Tam);
 
@@ -94,12 +94,15 @@ void exibeMemAloc (void)
 /* Aloca bloco de memória para processo*/
 void alocaMemoria (int nProcesso, int Tam)
 {
-    if (!buscaEspacoDisp(Tam)) {
+    int end_alt_1 = buscaEspacoDisp(Tam);
+    if (end_alt_1 == -1) {
         printf("ERRO: Não foi possível alocar memória para esse processo.\n");
         return;
     }
 
-    int end_mem = minimo_bloco_suficiente(Tam); // endereço do bloco de memória que será alocado
+    // endereço do bloco de memória que será alocado
+    int end_mem = minimo_bloco_suficiente(Tam, end_alt_1);
+
     tipo_MemLivre *atual = inicioMemLivre;
     while (atual) {
         if (atual->End_i == end_mem) {
@@ -121,10 +124,10 @@ int buscaEspacoDisp (int Tam)
     tipo_MemLivre *atual = inicioMemLivre;
 
     while (atual) {
-        if (atual->tam >= Tam) return 1;
+        if (atual->tam >= Tam) return atual->End_i;
         atual = atual->prox;
     }
-    return 0;
+    return -1;
 }
 
 void organizaBlocoMemLivre (void)
@@ -194,15 +197,18 @@ void liberaLista (void)
 
 /* Função utilizada para retornar o endereço do
  * menor bloco de memória suficiente para o processo */
-int minimo_bloco_suficiente(int Tam)
+int minimo_bloco_suficiente(int Tam, int End)
 {
     tipo_MemLivre *atual  = inicioMemLivre;
-    int minimo_suficiente = atual->tam;
-    int end_minimo_suf    = atual->End_i;
+    int minimo_suficiente;
+    int end_minimo_suf = End;
     while (atual) {
+        if (atual->End_i == End) {
+            minimo_suficiente = atual->tam;
+        }
         if (atual->tam >= Tam && atual->tam < minimo_suficiente) {
             minimo_suficiente = atual->tam;
-            end_minimo_suf    = atual->End_i;
+            end_minimo_suf = atual->End_i;
         }
         atual = atual->prox;
     }
