@@ -1,11 +1,12 @@
 /*
  * TODO:
- *       [ ] Verificar se é possível alocar para um processo um
+ *       [O] Verificar se é possível alocar para um processo um
  *           espaço de memória que já está sendo utilizado
  *       [ ] Testar ordens diferentes para inserção e remoção
  *           de processos.
  *       [ ] Verificar se é possível alocar um processo que
  *           não cabe em nenhum bloco de memória.
+ *       [ ] Error Catching
 */
 
 #include <stdio.h>
@@ -24,6 +25,10 @@ int main()
 
     printf("\nQuantidade de memória (KB) disponível? ");
     scanf("%d", &mem_disp);
+    if (mem_disp <= 0) {
+        printf("A quantidade memória precisa ser um número inteiro maior que zero.\n");
+        main();
+    }
     insereBlocoMemLivre(0, mem_disp);
 
     while(exec)
@@ -87,6 +92,5 @@ int main()
             break;
         }
     }
-
     return 0;
 }

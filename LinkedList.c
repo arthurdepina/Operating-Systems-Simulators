@@ -94,7 +94,7 @@ void exibeMemAloc (void)
 /* Aloca bloco de memória para processo*/
 void alocaMemoria (int nProcesso, int Tam)
 {
-    if (!buscaEspacoDisp) {
+    if (!buscaEspacoDisp(Tam)) {
         printf("ERRO: Não foi possível alocar memória para esse processo.\n");
         return;
     }
