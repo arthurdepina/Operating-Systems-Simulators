@@ -1,15 +1,12 @@
 /*
- * TODO:
- *       [O] Verificar se é possível alocar para um processo um
- *           espaço de memória que já está sendo utilizado
- *       [O] Testar ordens diferentes para inserção e remoção
- *           de processos.
- *       [ ] Verificar se é possível alocar um processo que
- *           não cabe em nenhum bloco de memória.
- *       [O] Verificar a alocação de um processo que não cabe
- *           no primeiro espaço livre, mas cabe em algum outro
- *       [O] Ordenação da memória alocada
- *       [O] Error Catching
+ *              Simulador de Gerenciamento de Memória                
+ * Grupo:
+ * Arthur de Pina Balduino Leitão - 32207840
+ * João Victor Dallapé Madeira    - 32209592
+ * David Varão Lima Bentes Pessoa - 32253133
+ * Disponível em:
+ * https://github.com/arthurdepina/Sistemas-Operacionais-Trabalho-01
+ * https://replit.com/@arthurdepina/Sistemas-Operacionais-Trabalho-01
 */
 
 #include <stdio.h>
@@ -84,7 +81,7 @@ int main()
 
         case 6:
 
-            printf("\nPrograma Finalizado\n\n");
+            printf("\nPrograma Finalizado\n\n\n");
             liberaLista();
             exec = false;
             break;
