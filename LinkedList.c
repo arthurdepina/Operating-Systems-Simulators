@@ -341,3 +341,16 @@ int quantaMemoriaAloc ()
     }
     return total_aloc;
 }
+
+int exibeProcesso (int n_processo)
+{
+    tipo_MemAloc *atual = inicioMemAloc;
+    while (atual) {
+        if (atual->NProcesso == n_processo) {
+            printf("Numero do Processo: %d\n", atual->NProcesso);
+            printf("Endereço do início do bloco de memória: %d\n", atual->End_i);
+            printf("Tamanho do processo: %d\n", atual->tam);
+        }
+        atual = atual->prox;
+    }
+}

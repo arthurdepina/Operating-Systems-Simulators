@@ -19,6 +19,9 @@ int main ()
     alocaMemoria(4, 400);
     exibeMemLivre();
     exibeMemAloc();
+    printf("quanta memória livre: %d\n", quantaMemoriaLivre());
+    printf("quanta memória alocada: %d\n", quantaMemoriaAloc());
+    exibeProcesso(4);
     // exibeMemLivre();
     // exibeMemAloc();
     // finalizaProcesso(1);
