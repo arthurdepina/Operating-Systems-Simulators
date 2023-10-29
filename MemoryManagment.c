@@ -53,15 +53,20 @@ int main()
             printf("Memória Necessária? ");
             scanf("%d", &mem_necessaria); printf("\n");
             alocaMemoria(numero_processo, mem_necessaria);
+            del_bloco_mem_livre();
             break;
 
         case 2:
 
             printf("Número do Processo? ");
             scanf("%d", &numero_processo); printf("\n");
-            finalizaProcesso(numero_processo);
-            organizaBlocoMemLivre();
-            break;
+            if (valida_processo_remover(numero_processo)) {
+                finalizaProcesso(numero_processo);
+                organizaBlocoMemLivre();
+                break;
+            } else {
+                break;
+            }
 
         case 3:
 

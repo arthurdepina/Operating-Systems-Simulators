@@ -396,6 +396,46 @@ int valida_memoria(int mem)
     }
 }
 
+int valida_processo_remover(int n)
+{
+    tipo_MemAloc *atual = inicioMemAloc;
+    while (atual) {
+        if (atual->NProcesso == n) {
+            return 1;
+        }
+        atual = atual->prox;
+    }
+    printf("\nEsse processo não existe.\n");
+    return 0;
+}
+
+/* Deleta Bloco de Memória Livre
+ * Remove um Bloco de Memória Livre quando a memória
+ * disponível nesse bloco for igual a zero.*/
+void del_bloco_mem_livre()
+{
+    tipo_MemLivre *atual = inicioMemLivre;
+
+    while (atual) {
+        if (atual->tam == 0) {
+            inicioMemLivre = atual->prox;
+            free(atual);
+            return;
+        }
+
+        if (atual->prox) {
+            if (atual->prox->tam == 0) {
+                tipo_MemLivre *apagar = atual->prox;
+                atual->prox = atual->prox->prox;
+                free(apagar);
+                return;
+            }
+        }
+        atual = atual->prox;
+    }
+    return;
+}
+
 /* Funções que eu fiz por diversão. */
 
 int quantaMemoriaLivre () 
