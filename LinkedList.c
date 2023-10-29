@@ -159,7 +159,7 @@ void alocaMemoria (int nProcesso, int Tam)
 
             // Alterando tamanho disponível e endereço do nó de
             // memória livre em que o processo foi armazenado.
-            atual->tam   = atual->tam - Tam;
+            atual->tam   = atual->tam   - Tam;
             atual->End_i = atual->End_i + Tam;
 
             organizaBlocoMemAloc();
@@ -255,10 +255,10 @@ void finalizaProcesso(int n)
  * Passa para o próximo nó.                                     */
 void liberaLista (void)
 {
-    tipo_MemLivre *atual_livre = inicioMemLivre;
+    tipo_MemLivre *atual_livre   = inicioMemLivre;
     tipo_MemLivre *proximo_livre = inicioMemLivre;
-    tipo_MemAloc *atual_aloc = inicioMemAloc;
-    tipo_MemAloc *proximo_aloc = inicioMemAloc;
+    tipo_MemAloc *atual_aloc     = inicioMemAloc;
+    tipo_MemAloc *proximo_aloc   = inicioMemAloc;
 
     // Liberando a lista de memória livre
     while (atual_livre) {
@@ -275,7 +275,7 @@ void liberaLista (void)
     }
 
     inicioMemLivre = NULL;
-    inicioMemAloc = NULL;
+    inicioMemAloc  = NULL;
 }
 
 /*                      Funções Extras e Auxiliares                           */
@@ -296,7 +296,7 @@ int minimo_bloco_suficiente(int Tam, int End)
         }
         if (atual->tam >= Tam && atual->tam < minimo_suficiente) {
             minimo_suficiente = atual->tam;
-            end_minimo_suf = atual->End_i;
+            end_minimo_suf    = atual->End_i;
         }
         atual = atual->prox;
     }
@@ -328,7 +328,7 @@ tipo_MemLivre* mergeSort(tipo_MemLivre *head) {
         return head;
 
     tipo_MemLivre *middle = head;
-    tipo_MemLivre *fast = head->prox;
+    tipo_MemLivre *fast   = head->prox;
 
     while (fast && fast->prox) {
         middle = middle->prox;
@@ -366,7 +366,7 @@ tipo_MemAloc* mergeSort_aloc(tipo_MemAloc *head) {
         return head;
 
     tipo_MemAloc *middle = head;
-    tipo_MemAloc *fast = head->prox;
+    tipo_MemAloc *fast   = head->prox;
 
     while (fast && fast->prox) {
         middle = middle->prox;
