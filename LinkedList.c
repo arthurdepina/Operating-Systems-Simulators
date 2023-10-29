@@ -330,3 +330,14 @@ int quantaMemoriaLivre ()
     }
     return total_livre;
 }
+
+int quantaMemoriaAloc ()
+{
+    tipo_MemAloc *atual = inicioMemAloc;
+    int total_aloc = 0;
+    while (atual) {
+        total_aloc += atual->tam;
+        atual = atual->prox;
+    }
+    return total_aloc;
+}
