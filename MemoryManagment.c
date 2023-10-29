@@ -9,7 +9,7 @@
  *       [O] Verificar a alocação de um processo que não cabe
  *           no primeiro espaço livre, mas cabe em algum outro
  *       [O] Ordenação da memória alocada
- *       [ ] Error Catching
+ *       [O] Error Catching
 */
 
 #include <stdio.h>
