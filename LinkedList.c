@@ -29,6 +29,8 @@ tipo_MemAloc* mergeSort_aloc(tipo_MemAloc *head);
 
 void organizaBlocoMemAloc();
 
+int valida_memoria(int mem);
+
 void inicia (void)
 {
     inicioMemLivre = NULL;
@@ -101,6 +103,8 @@ void exibeMemAloc (void)
 /* Aloca bloco de memória para processo*/
 void alocaMemoria (int nProcesso, int Tam)
 {
+    if (!valida_memoria(Tam)) return;
+
     int end_alt_1 = buscaEspacoDisp(Tam);
     if (end_alt_1 == -1) {
         printf("ERRO: Não foi possível alocar memória para esse processo.\n");
@@ -176,6 +180,8 @@ void finalizaProcesso(int n)
         }
         atual = atual->prox;
     }
+
+    printf("Processo não encontrado");
 }
 
 void liberaLista (void)
@@ -304,17 +310,13 @@ void organizaBlocoMemAloc()
     inicioMemAloc = mergeSort_aloc(inicioMemAloc);
 }
 
-int quantMemoriaDisp () 
+int valida_memoria(int mem)
 {
-
+    if (mem <= 0) {
+        printf("ERRO: A quantidade de memória deve ser um número inteiro maior que zero.");
+        return 0;
+    } else {
+        return 1;
+    }
 }
 
-int quantMemoriaOcup ()
-{
-    
-}
-
-int buscaProcesso ()
-{
-
-}
