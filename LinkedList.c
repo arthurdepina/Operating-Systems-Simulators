@@ -320,3 +320,13 @@ int valida_memoria(int mem)
     }
 }
 
+int quantaMemoriaLivre () 
+{
+    tipo_MemLivre *atual = inicioMemLivre;
+    int total_livre = 0;
+    while (atual) {
+        total_livre += atual->tam;
+        atual = atual->prox;
+    }
+    return total_livre;
+}
