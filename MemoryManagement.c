@@ -64,9 +64,8 @@ int main()
                 finalizaProcesso(numero_processo);
                 organizaBlocoMemLivre();
                 break;
-            } else {
-                break;
             }
+            break;
 
         case 3:
 
