@@ -63,7 +63,6 @@ int main()
             if (valida_processo_remover(numero_processo)) {
                 finalizaProcesso(numero_processo);
                 organizaBlocoMemLivre();
-                break;
             }
             break;
 
