@@ -1,10 +1,14 @@
 /*
- *              Simulador de Gerenciamento de Memória                
+ *              Simulador de Gerenciamento de Memória
+ *                
  * Grupo:
+ * 
  * Arthur de Pina Balduino Leitão - 32207840
  * João Victor Dallapé Madeira    - 32209592
  * David Varão Lima Bentes Pessoa - 32253133
+ * 
  * Disponível em:
+ * 
  * https://github.com/arthurdepina/Sistemas-Operacionais-Trabalho-01
  * https://replit.com/@arthurdepina/Sistemas-Operacionais-Trabalho-01
 */
