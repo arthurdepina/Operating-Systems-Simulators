@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define IDNAME 30;
+#define PATH 100;
+
 typedef struct Node {
     char id[256];
     char path[1024];
