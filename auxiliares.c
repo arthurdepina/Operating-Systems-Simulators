@@ -5,16 +5,8 @@
 int getting_input_diretorio(char *input, char *firstLetter, char *secondLetter, char *name) {
     // Parse the input
     if (sscanf(input, "%c %c %[^\n]", firstLetter, secondLetter, name) == 3) {
-        // Successfully parsed the input
-        printf("First letter: %c, Second letter: %c, Name: %s\n", *firstLetter, *secondLetter, name);
-
-        // Example action based on the first letter
-        if (*firstLetter == 'm') {
-            printf("Change to: %s\n", name);
-        }
         return 1; // Return 1 for success
     } else {
-        printf("Invalid input format.\n");
         return 0; // Return 0 for failure
     }
 }
@@ -42,4 +34,9 @@ int getting_input_arquivo(const char *input, char *letter, char *type, char *nam
     name[name_length] = '\0'; // Null-terminate the name string
 
     return 1; // Return 1 for success
+}
+
+void fail ()
+{
+    printf("\n\nERRO\n\n");
 }

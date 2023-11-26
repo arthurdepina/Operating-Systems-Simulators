@@ -1,7 +1,27 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 
-int getting_input(const char *input, char *letter, char *type, char *name, int *size) {
+int getting_input_diretorio(char *input, char *firstLetter, char *secondLetter, char *name) {
+    printf("WHAAAT");
+    // Parse the input
+    if (sscanf(input, "%c %c %[^\n]", firstLetter, secondLetter, name) == 3) {
+        // Successfully parsed the input
+        printf("First letter: %c, Second letter: %c, Name: %s\n", *firstLetter, *secondLetter, name);
+
+        // Example action based on the first letter
+        if (*firstLetter == 'm') {
+            printf("Change to: %s\n", name);
+        }
+        return 1; // Return 1 for success
+    } else {
+        printf("Invalid input format.\n");
+        return 0; // Return 0 for failure
+    }
+}
+
+int getting_input_arquivo(const char *input, char *letter, char *type, char *name, int *size) {
     // Assuming input is already trimmed of the newline
 
     // Read the first two characters
@@ -26,26 +46,35 @@ int getting_input(const char *input, char *letter, char *type, char *name, int *
     return 1; // Return 1 for success
 }
 
-int main() {
-    char input[200];
-    char letter, type;
-    char name[150];
-    int size;
+int main ()
+{
+    printf("m <a/d> <nome> <tamanho (se for ) -- criar dir ou arq\nc <a/d> <nome do diretorio> -- mudar repositorio\nd <a/d> <nome do arquivo> -- deletar arquivo\np -- arvore em profundidade\nl -- arvore em largura\n");
+    while (true)
+    {
+        char input[100];
+        char comando, tipo;
+        char nome[50];
+        int tamanho = 0;
 
-    printf("Enter input (format: <letter> <type> <name> <size>): ");
-    fgets(input, sizeof(input), stdin);
+        printf("> ");
+        fgets(input, sizeof(input), stdin);
+        input[strcspn(input, "\n")] = 0; // Removing the newline character that fgets reads
 
-    // Remove newline character at the end if present
-    input[strcspn(input, "\n")] = 0;
+        if (input[0] == 'm') {
+            char *a_d = input[2];
+            printf("a_d = %c\n", a_d);
+            if (!strcmp(a_d, "d")) {
+                getting_input_diretorio(input, &comando, &tipo, nome);
+            } else {
+                getting_input_arquivo(input, &comando, &tipo, nome, &tamanho);
+            }
+            printf("COMANDO: %c\n", comando);
+            printf("TIPO: %c\n", tipo);
+            printf("NOME: %s\n", nome);
+            if (tamanho) printf("TAMANHO: %d\n", tamanho);
+        }
 
-    if (getting_input(input, &letter, &type, name, &size)) {
-        printf("Letter: %c\n", letter);
-        printf("Type: %c\n", type);
-        printf("Name: %s\n", name);
-        printf("Size: %d\n", size);
-    } else {
-        printf("Invalid input format.\n");
+        if (!strcmp(input, "--end")) break;
     }
-
     return 0;
 }
