@@ -6,14 +6,19 @@
 #include "auxiliares.c"
 
 int main() {
+    Node *atual = malloc(sizeof(Node));
+
     char root_name[100];
     printf("Nome da Raiz?\n");
     printf("> ");
     fgets(root_name, sizeof(root_name), stdin);
     root_name[strcspn(root_name, "\n")] = 0; // remove o caractere de nova linha
-    printf("Nome da raiz definido como: %s\n\n", root_name);
+    
+    atual = criarRaiz(root_name);
+    printf("Nome da raiz definido como: %s\n", root_name);
 
-    printf("m <a/d> <nome> <tamanho (se for ) -- criar dir ou arq\nc <a/d> <nome do diretorio> -- mudar repositorio\nd <a/d> <nome do arquivo> -- deletar arquivo\np -- arvore em profundidade\nl -- arvore em largura\n\n");
+    show_commands();
+
     while (true) {
         char input[100];
         char comando, tipo;
@@ -35,7 +40,7 @@ int main() {
                 if (tipo == 'd') {
                     // Criar Diretorio
                 } else if (tipo == 'a') {
-                    // Criar arquivo
+                    inserirArquivo(atual, nome, tamanho);
                 } else {
                     fail();
                     break;
@@ -75,10 +80,14 @@ int main() {
 
             case '-':
                 if (!strcmp(input, "--end")) {
-                    printf("\nPrograma finalizado.\n");
+                    printf("\nPrograma finalizado.\n\n");
                     return 0;
                 } else if (!strcmp(input, "--help")) {
-                        printf("\nm <a/d> <nome> <tamanho (se for ) -- criar dir ou arq\nc <a/d> <nome do diretorio> -- mudar repositorio\nd <a/d> <nome do arquivo> -- deletar arquivo\np -- arvore em profundidade\nl -- arvore em largura\n\n");
+                    show_commands();
+                } else if (!strcmp(input, "--show")) {
+                    mostrar_no(atual);
+                } else if (!strcmp(input, "--depth")) {
+                    imprimirProfundidade(atual);
                 }
                 break;
 

@@ -40,3 +40,17 @@ void fail ()
 {
     printf("\nERRO\n\n");
 }
+
+void show_commands ()
+{
+    printf("\nm <a/d> <nome> <tamanho (se for ) : criar dir ou arq\n");
+    printf("c <a/d> <nome do diretorio> : mudar repositorio\n");
+    printf("d <a/d> <nome do arquivo> : deletar arquivo\n");
+    printf("p : arvore em profundidade\n");
+    printf("l : arvore em largura\n");
+    printf("--help : mostrar comandos\n");
+    printf("--end : encerrar\n");
+    printf("--show : mostrar no atual\n");
+    printf("--depth : exibe arvore em profundidade\n");
+    printf("\n");
+}
