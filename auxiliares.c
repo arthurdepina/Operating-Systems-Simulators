@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int getting_input_diretorio(char *input, char *firstLetter, char *secondLetter, char *name) {
+int getting_input(char *input, char *firstLetter, char *secondLetter, char *name) {
     // Parse the input
     if (sscanf(input, "%c %c %[^\n]", firstLetter, secondLetter, name) == 3) {
         return 1; // Return 1 for success
@@ -11,7 +11,7 @@ int getting_input_diretorio(char *input, char *firstLetter, char *secondLetter, 
     }
 }
 
-int getting_input_arquivo(const char *input, char *letter, char *type, char *name, int *size) {
+int getting_input_with_size(const char *input, char *letter, char *type, char *name, int *size) {
     // Assuming input is already trimmed of the newline
 
     // Read the first two characters

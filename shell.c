@@ -6,6 +6,13 @@
 #include "auxiliares.c"
 
 int main() {
+    char root_name[100];
+    printf("Nome da Raiz?\n");
+    printf("> ");
+    fgets(root_name, sizeof(root_name), stdin);
+    root_name[strcspn(root_name, "\n")] = 0; // remove o caractere de nova linha
+    printf("Nome da raiz definido como: %s\n\n", root_name);
+
     printf("m <a/d> <nome> <tamanho (se for ) -- criar dir ou arq\nc <a/d> <nome do diretorio> -- mudar repositorio\nd <a/d> <nome do arquivo> -- deletar arquivo\np -- arvore em profundidade\nl -- arvore em largura\n\n");
     while (true) {
         char input[100];
@@ -20,16 +27,10 @@ int main() {
         switch (input[0]) {
             case 'm':
                 if (input[2] == 'd') {
-                    if (!getting_input_diretorio(input, &comando, &tipo, nome)) { fail(); break; }
+                    if (!getting_input(input, &comando, &tipo, nome)) { fail(); break; }
                 } else {
-                    if (!getting_input_arquivo(input, &comando, &tipo, nome, &tamanho)) { fail(); break; }
+                    if (!getting_input_with_size(input, &comando, &tipo, nome, &tamanho)) { fail(); break; }
                 }
-                printf("\n");
-                printf("COMANDO: %c\n", comando);
-                printf("TIPO: %c\n", tipo);
-                printf("NOME: %s\n", nome);
-                if (tamanho) printf("TAMANHO: %d\n", tamanho);
-                printf("\n");
                 if (tipo == 'd') {
                     // Criar Diretorio
                 } else if (tipo == 'a') {
@@ -40,8 +41,23 @@ int main() {
                 }
                 break;
 
+            case 'c':
+                if (!getting_input(input, &comando, &tipo, nome)) { fail(); break; }
+                // mudar para o nó desejado
+                break;
+
             case 'd':
-                // deletar arquivo
+                if (!getting_input(input, &comando, &tipo, nome)) { fail(); break; }
+                if (tamanho) printf("TAMANHO: %d\n", tamanho);
+                printf("\n");
+                if (tipo == 'd') {
+                    // deletar diretorio
+                } else if (tipo == 'a') {
+                    // deletar arquivo
+                } else {
+                    fail();
+                    break;
+                }
                 break;
 
             case 'p':
@@ -65,3 +81,10 @@ int main() {
     }
     return 0;
 }
+
+                // printf("\n");
+                // printf("COMANDO: %c\n", comando);
+                // printf("TIPO: %c\n", tipo);
+                // printf("NOME: %s\n", nome);
+                // if (tamanho) printf("TAMANHO: %d\n", tamanho);
+                // printf("\n");
