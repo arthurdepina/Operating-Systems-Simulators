@@ -38,5 +38,5 @@ int getting_input_with_size(const char *input, char *letter, char *type, char *n
 
 void fail ()
 {
-    printf("\n\nERRO\n\n");
+    printf("\nERRO\n\n");
 }

@@ -25,6 +25,7 @@ int main() {
         input[strcspn(input, "\n")] = 0; // Removing the newline character that fgets reads
 
         switch (input[0]) {
+                                        // Criar arquivo ou diretório
             case 'm':
                 if (input[2] == 'd') {
                     if (!getting_input(input, &comando, &tipo, nome)) { fail(); break; }
@@ -41,11 +42,13 @@ int main() {
                 }
                 break;
 
+                                        // Mudar de diretório ou arquivo
             case 'c':
                 if (!getting_input(input, &comando, &tipo, nome)) { fail(); break; }
                 // mudar para o nó desejado
                 break;
 
+                                        // Deletar diretório ou arquivo
             case 'd':
                 if (!getting_input(input, &comando, &tipo, nome)) { fail(); break; }
                 if (tamanho) printf("TAMANHO: %d\n", tamanho);
@@ -60,17 +63,22 @@ int main() {
                 }
                 break;
 
+                                        // Exibir árvore em profundidade
             case 'p':
                 // profundidade
                 break;
 
+                                        // Exibir árvore em largura
             case 'l':
                 // largura
                 break;
 
             case '-':
                 if (!strcmp(input, "--end")) {
+                    printf("\nPrograma finalizado.\n");
                     return 0;
+                } else if (!strcmp(input, "--help")) {
+                        printf("\nm <a/d> <nome> <tamanho (se for ) -- criar dir ou arq\nc <a/d> <nome do diretorio> -- mudar repositorio\nd <a/d> <nome do arquivo> -- deletar arquivo\np -- arvore em profundidade\nl -- arvore em largura\n\n");
                 }
                 break;
 
