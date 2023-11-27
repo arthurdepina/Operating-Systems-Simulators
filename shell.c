@@ -75,14 +75,13 @@ int main() {
                                         // Exibir árvore em profundidade
             case 'p':
 
-                // profundidade
                 imprimirProfundidade(atual);
                 break;
 
                                         // Exibir árvore em largura
             case 'l':
 
-                // largura
+                imprimirLargura(atual);
                 break;
 
             case '-':

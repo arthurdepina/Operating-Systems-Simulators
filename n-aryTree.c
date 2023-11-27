@@ -306,7 +306,7 @@ void imprimirProfundidade(Node* no)
     while (raiz != NULL && raiz->dir_ant != NULL) {
         raiz = raiz->dir_ant;
     }
-
+ 
     // Chamar a função auxiliar para imprimir a árvore
     imprimirProfundidadeRecursiva(raiz);
 }
@@ -316,7 +316,7 @@ void imprimirProfundidadeRecursiva(Node* no)
     if (no == NULL) return;
 
     // Imprimir o ID do nó
-    printf("%s\n", no->path);
+    printf("%s\n", no->id);
 
     // Chamar recursivamente para todos os filhos
     Node* temp = no->filhos;
@@ -324,6 +324,81 @@ void imprimirProfundidadeRecursiva(Node* no)
         imprimirProfundidadeRecursiva(temp);
         temp = temp->prox;
     }
+}
+
+// Função auxiliar para criar uma nova fila
+typedef struct Queue {
+    Node **items;
+    int front, rear, size, capacity;
+} Queue;
+
+Queue* createQueue(int capacity) {
+    Queue *queue = (Queue*)malloc(sizeof(Queue));
+    queue->capacity = capacity;
+    queue->front = queue->size = 0;
+    queue->rear = capacity - 1;
+    queue->items = (Node**)malloc(queue->capacity * sizeof(Node*));
+    return queue;
+}
+
+int isFull(Queue *queue) {
+    return (queue->size == queue->capacity);
+}
+
+int isEmpty(Queue *queue) {
+    return (queue->size == 0);
+}
+
+void enqueue(Queue *queue, Node *item) {
+    if (isFull(queue))
+        return;
+    queue->rear = (queue->rear + 1) % queue->capacity;
+    queue->items[queue->rear] = item;
+    queue->size = queue->size + 1;
+}
+
+Node* dequeue(Queue *queue) {
+    if (isEmpty(queue))
+        return NULL;
+    Node *item = queue->items[queue->front];
+    queue->front = (queue->front + 1) % queue->capacity;
+    queue->size = queue->size - 1;
+    return item;
+}
+
+// Função para encontrar a raiz da árvore
+Node* encontrarRaiz(Node *atual) {
+    while (atual != NULL && atual->dir_ant != NULL) {
+        atual = atual->dir_ant;
+    }
+    return atual;
+}
+
+// Função para imprimir a árvore em largura
+void imprimirLargura(Node *atual) {
+    if (atual == NULL) return;
+
+    atual = encontrarRaiz(atual);  // Encontrar a raiz da árvore
+
+    Queue *queue = createQueue(100);  // Supondo que 100 é um tamanho suficiente para a fila
+    enqueue(queue, atual);
+
+    while (!isEmpty(queue)) {
+        Node *current = dequeue(queue);
+
+        // Imprimir o nó atual
+        printf("%s\n", current->path);
+
+        // Adicionar todos os filhos do nó atual na fila
+        Node *child = current->filhos;
+        while (child) {
+            enqueue(queue, child);
+            child = child->prox;
+        }
+    }
+
+    free(queue->items);
+    free(queue);
 }
 
 void mostrar_no(const Node *no)
