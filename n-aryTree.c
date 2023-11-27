@@ -22,6 +22,10 @@ Node* changeNode(Node* atual, const char* nome);
 Node* buscarNo(Node* no, const char* nome);
 Node* deletaArquivo(Node* atual, const char* nome);
 Node* encontraArquivo(Node** pai, Node* no, const char* nome);
+Node* deletaDiretorio(Node* atual, const char* nomeDoDiretorio);
+Node* encontraDiretorio(Node** pai, Node* no, const char* nome);
+void alteraPaths();
+void atualizaPathsFilhos();
 void imprimirProfundidade(Node* no);
 void imprimirProfundidadeRecursiva(Node* no);
 void mostrar_no(const Node *no);
@@ -204,6 +208,95 @@ Node* encontraArquivo(Node** pai, Node* no, const char* nome)
     }
 
     return NULL; // Retorna NULL se o arquivo não for encontrado
+}
+
+Node* deletaDiretorio(Node* atual, const char* nomeDoDiretorio) {
+    if (atual == NULL || nomeDoDiretorio == NULL) {
+        return NULL; // Retorna NULL se o nó atual ou o nome do diretório for NULL
+    }
+
+    // Subir até a raiz da árvore
+    Node* raiz = atual;
+    while (raiz->dir_ant != NULL) {
+        raiz = raiz->dir_ant;
+    }
+
+    // Procurar o diretório a partir da raiz e obter o pai
+    Node* pai = NULL;
+    Node* diretorio = encontraDiretorio(&pai, raiz, nomeDoDiretorio);
+
+    // Se o diretório não for encontrado, retorna NULL
+    if (diretorio == NULL) {
+        return NULL;
+    }
+
+    // Se o diretório a ser deletado é o atual, ajustar o atual para o pai
+    Node* novoAtual = (diretorio == atual) ? pai : atual;
+
+    // Lidar com os filhos do diretório
+    if (diretorio->filhos != NULL) {
+        // Se o diretório a ser deletado tem filhos, reatribuí-los para o pai
+        if (pai != NULL) {
+            // Encontrar o último filho do pai
+            Node* ultimoFilhoPai = pai->filhos;
+            while (ultimoFilhoPai->prox != NULL) {
+                ultimoFilhoPai = ultimoFilhoPai->prox;
+            }
+            ultimoFilhoPai->prox = diretorio->filhos;
+        } else {
+            // Se o diretório não tem pai, então é a raiz e não pode ser deletado
+            return atual;
+        }
+    }
+
+    // Remover o diretório da lista de filhos do pai
+    if (pai->filhos == diretorio) {
+        pai->filhos = diretorio->prox;
+    } else {
+        Node* temp = pai->filhos;
+        while (temp != NULL && temp->prox != diretorio) {
+            temp = temp->prox;
+        }
+        if (temp != NULL) {
+            temp->prox = diretorio->prox;
+        }
+    }
+
+    free(diretorio); // Liberar a memória do nó do diretório
+    return novoAtual;
+}
+
+Node* encontraDiretorio(Node** pai, Node* no, const char* nome)
+{
+    if (no == NULL) {
+        return NULL;
+    }
+
+    // Procurar o diretório nos filhos do nó atual
+    Node* temp = no->filhos;
+    while (temp != NULL) {
+        if (temp->tipo == 'd' && strcmp(temp->id, nome) == 0) {
+            *pai = no; // Configurar o pai do diretório encontrado
+            return temp;
+        }
+        Node* diretorio = encontraDiretorio(pai, temp, nome);
+        if (diretorio != NULL) {
+            return diretorio;
+        }
+        temp = temp->prox;
+    }
+
+    return NULL; // Retorna NULL se o diretório não for encontrado
+}
+
+void alteraPaths ()
+{
+    
+}
+
+void atualizaPathsFilhos ()
+{
+    
 }
 
 void imprimirProfundidade(Node* no)

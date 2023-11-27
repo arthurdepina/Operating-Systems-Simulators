@@ -62,7 +62,8 @@ int main() {
                 if (tamanho) printf("TAMANHO: %d\n", tamanho);
                 printf("\n");
                 if (tipo == 'd') {
-                    // deletar diretorio
+                    alteraPaths(atual, nome);
+                    atual = deletaDiretorio(atual, nome);
                 } else if (tipo == 'a') {
                     atual = deletaArquivo(atual, nome);
                 } else {
@@ -112,6 +113,13 @@ int main() {
                 // printf("\n");
 
 /*          
- *          Problemas conhecidos:
+ *                  Problemas conhecidos:
  * Não podem haver dois nós com mesmo id (nome)
+ *      Na verdade, acho que talvez isso seja um problema apenas quando
+ *      queremos deletar ou mudar para algum node. Nesses casos será
+ *      necessário passar o path para esses nodes.
+ * Quando removemos um diretorio, o path dos filhos nao é alterado.
+ *      Talvez compense usar listas nos paths. Não vou perder tempo
+ *      com isso por agora porque o enunciado nao pede para deletar
+ *      diretórios.
 */
