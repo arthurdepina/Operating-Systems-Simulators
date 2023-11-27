@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 
+
 typedef struct Node {
     char id[256];
     char path[1024];
@@ -14,22 +15,61 @@ typedef struct Node {
 } Node;
 
 
+typedef struct Queue {
+    Node **items;
+    int front, rear, size, capacity;
+} Queue;
+
+
+
 Node* criarRaiz(const char *id);
+
 void imprimirProfundidadeRecursiva(Node* no);
+
 bool inserirArquivo(Node* atual, const char* nome, int size);
+
 bool inserirDiretorio(Node* atual, const char* nome);
+
 Node* changeNode(Node* atual, const char* nome);
+
 Node* buscarNo(Node* no, const char* nome);
+
 Node* deletaArquivo(Node* atual, const char* nome);
+
 Node* encontraArquivo(Node** pai, Node* no, const char* nome);
+
 Node* deletaDiretorio(Node* atual, const char* nomeDoDiretorio);
+
 Node* encontraDiretorio(Node** pai, Node* no, const char* nome);
+
 void alteraPaths();
+
 void atualizaPathsFilhos();
+
 void imprimirProfundidade(Node* no);
+
 void imprimirProfundidadeRecursiva(Node* no);
+
+Queue* createQueue(int capacity);
+
+int isFull(Queue *queue);
+
+int isEmpty(Queue *queue);
+
+void enqueue(Queue *queue, Node *item);
+
+Node* dequeue(Queue *queue);
+
+Node* encontrarRaiz(Node *atual);
+
+void imprimirLargura(Node *atual);
+
 void mostrar_no(const Node *no);
+
+void mostrar_no(const Node *no);
+
 bool verificaInsercao(Node* atual);
+
 
 
 Node* criarRaiz(const char *id) {
@@ -327,10 +367,6 @@ void imprimirProfundidadeRecursiva(Node* no)
 }
 
 // Função auxiliar para criar uma nova fila
-typedef struct Queue {
-    Node **items;
-    int front, rear, size, capacity;
-} Queue;
 
 Queue* createQueue(int capacity) {
     Queue *queue = (Queue*)malloc(sizeof(Queue));
