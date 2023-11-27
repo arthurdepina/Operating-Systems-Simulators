@@ -32,13 +32,14 @@ int main() {
         switch (input[0]) {
                                         // Criar arquivo ou diretório
             case 'm':
+
                 if (input[2] == 'd') {
                     if (!getting_input(input, &comando, &tipo, nome)) { fail(); break; }
                 } else {
                     if (!getting_input_with_size(input, &comando, &tipo, nome, &tamanho)) { fail(); break; }
                 }
                 if (tipo == 'd') {
-                    // Criar Diretorio
+                    inserirDiretorio(atual, nome);
                 } else if (tipo == 'a') {
                     inserirArquivo(atual, nome, tamanho);
                 } else {
@@ -49,12 +50,14 @@ int main() {
 
                                         // Mudar de diretório ou arquivo
             case 'c':
+
                 if (!getting_input(input, &comando, &tipo, nome)) { fail(); break; }
                 // mudar para o nó desejado
                 break;
 
                                         // Deletar diretório ou arquivo
             case 'd':
+
                 if (!getting_input(input, &comando, &tipo, nome)) { fail(); break; }
                 if (tamanho) printf("TAMANHO: %d\n", tamanho);
                 printf("\n");
@@ -70,15 +73,19 @@ int main() {
 
                                         // Exibir árvore em profundidade
             case 'p':
+
                 // profundidade
+                imprimirProfundidade(atual);
                 break;
 
                                         // Exibir árvore em largura
             case 'l':
+
                 // largura
                 break;
 
             case '-':
+
                 if (!strcmp(input, "--end")) {
                     printf("\nPrograma finalizado.\n\n");
                     return 0;
@@ -86,8 +93,6 @@ int main() {
                     show_commands();
                 } else if (!strcmp(input, "--show")) {
                     mostrar_no(atual);
-                } else if (!strcmp(input, "--depth")) {
-                    imprimirProfundidade(atual);
                 }
                 break;
 

@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-int getting_input(char *input, char *firstLetter, char *secondLetter, char *name) {
+int getting_input(char *input, char *firstLetter, char *secondLetter, char *name)
+{
     // Parse the input
     if (sscanf(input, "%c %c %[^\n]", firstLetter, secondLetter, name) == 3) {
         return 1; // Return 1 for success
@@ -11,9 +12,8 @@ int getting_input(char *input, char *firstLetter, char *secondLetter, char *name
     }
 }
 
-int getting_input_with_size(const char *input, char *letter, char *type, char *name, int *size) {
-    // Assuming input is already trimmed of the newline
-
+int getting_input_with_size(const char *input, char *letter, char *type, char *name, int *size)
+{
     // Read the first two characters
     if (sscanf(input, "%c %c", letter, type) != 2) {
         return 0; // Return 0 for failure

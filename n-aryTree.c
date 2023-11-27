@@ -14,7 +14,15 @@ typedef struct Node {
 } Node;
 
 
+Node* criarRaiz(const char *id);
 void imprimirProfundidadeRecursiva(Node* no);
+bool inserirArquivo(Node* atual, const char* nome, int size);
+bool inserirDiretorio(Node* atual, const char* nome);
+void imprimirProfundidade(Node* no);
+void imprimirProfundidadeRecursiva(Node* no);
+void mostrar_no(const Node *no);
+bool verificaInsercao(Node* atual);
+
 
 Node* criarRaiz(const char *id) {
     Node *raiz = malloc(sizeof(Node));
@@ -37,7 +45,10 @@ Node* criarRaiz(const char *id) {
     return raiz;
 }
 
-Node* inserirArquivo(Node* atual, const char* nome, int size) {
+bool inserirArquivo(Node* atual, const char* nome, int size)
+{
+    if (!verificaInsercao(atual)) return false;
+
     Node* novoNo = (Node*)malloc(sizeof(Node));
     strcpy(novoNo->id, nome);
     snprintf(novoNo->path, sizeof(novoNo->path), "%s/%s", atual->path, nome);
@@ -58,7 +69,31 @@ Node* inserirArquivo(Node* atual, const char* nome, int size) {
         temp->prox = novoNo;
     }
 
-    return novoNo;
+    return true;
+}
+
+bool inserirDiretorio(Node* atual, const char* nome)
+{
+    if (!verificaInsercao(atual)) return false;
+    Node* novoNo = (Node*)malloc(sizeof(Node));
+    strcpy(novoNo->id, nome);
+    snprintf(novoNo->path, sizeof(novoNo->path), "%s/%s", atual->path, nome);
+    novoNo->size = 0;
+    novoNo->tipo = 'd';
+    novoNo->dir_ant = atual;
+    novoNo->prox = NULL;
+    novoNo->filhos = NULL;
+
+    if (atual->filhos == NULL) {
+        atual->filhos = novoNo;
+    } else {
+        Node* temp = atual->filhos;
+        while (temp->prox != NULL) {
+            temp = temp->prox;
+        }
+        temp->prox = novoNo;
+    }
+    return true;
 }
 
 void imprimirProfundidade(Node* no) {
@@ -102,4 +137,14 @@ void mostrar_no(const Node *no) {
     printf("Proximo no: %p\n", (void *)no->prox);
     printf("Primeiro filho: %p\n", (void *)no->filhos);
     printf("\n");
+}
+
+
+// Verifica se estamos tentando inserir em um diretorio
+bool verificaInsercao(Node* atual) {
+    if (atual == NULL) {
+        return false; // Retorna false se o nó atual for NULL
+    }
+
+    return atual->tipo == 'd'; // Retorna true se for um diretório
 }
