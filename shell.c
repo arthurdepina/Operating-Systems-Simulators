@@ -64,7 +64,7 @@ int main() {
                 if (tipo == 'd') {
                     // deletar diretorio
                 } else if (tipo == 'a') {
-                    // deletar arquivo
+                    atual = deletaArquivo(atual, nome);
                 } else {
                     fail();
                     break;

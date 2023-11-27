@@ -51,6 +51,5 @@ void show_commands ()
     printf("--help : mostrar comandos\n");
     printf("--end : encerrar\n");
     printf("--show : mostrar no atual\n");
-    printf("--depth : exibe arvore em profundidade\n");
     printf("\n");
 }

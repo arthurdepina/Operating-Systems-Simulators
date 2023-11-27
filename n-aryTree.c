@@ -20,6 +20,8 @@ bool inserirArquivo(Node* atual, const char* nome, int size);
 bool inserirDiretorio(Node* atual, const char* nome);
 Node* changeNode(Node* atual, const char* nome);
 Node* buscarNo(Node* no, const char* nome);
+Node* deletaArquivo(Node* atual, const char* nome);
+Node* encontraArquivo(Node** pai, Node* no, const char* nome);
 void imprimirProfundidade(Node* no);
 void imprimirProfundidadeRecursiva(Node* no);
 void mostrar_no(const Node *no);
@@ -98,7 +100,8 @@ bool inserirDiretorio(Node* atual, const char* nome)
     return true;
 }
 
-Node* changeNode(Node* atual, const char* nome) {
+Node* changeNode(Node* atual, const char* nome)
+{
     if (atual == NULL || nome == NULL) {
         return NULL; // Retorna NULL se o nó atual ou o nome for NULL
     }
@@ -113,7 +116,8 @@ Node* changeNode(Node* atual, const char* nome) {
     return buscarNo(raiz, nome);
 }
 
-Node* buscarNo(Node* no, const char* nome) {
+Node* buscarNo(Node* no, const char* nome)
+{
     if (no == NULL) {
         return NULL;
     }
@@ -136,8 +140,74 @@ Node* buscarNo(Node* no, const char* nome) {
     return NULL; // Retorna NULL se o nó não for encontrado
 }
 
+Node* deletaArquivo(Node* atual, const char* nome)
+{
+    if (atual == NULL || nome == NULL) {
+        return NULL; // Retorna NULL se o nó atual ou o nome for NULL
+    }
 
-void imprimirProfundidade(Node* no) {
+    // Subir até a raiz da árvore
+    Node* raiz = atual;
+    while (raiz->dir_ant != NULL) {
+        raiz = raiz->dir_ant;
+    }
+
+    // Procurar o arquivo a partir da raiz e obter o pai
+    Node* pai = NULL;
+    Node* arquivo = encontraArquivo(&pai, raiz, nome);
+
+    // Se o arquivo não for encontrado, retorna NULL
+    if (arquivo == NULL) {
+        return NULL;
+    }
+
+    // Se o arquivo a ser deletado é o atual, ajustar o atual para o pai
+    Node* novoAtual = (arquivo == atual) ? pai : atual;
+
+    // Remover o arquivo da lista de filhos do pai
+    if (pai != NULL) {
+        if (pai->filhos == arquivo) {
+            pai->filhos = arquivo->prox;
+        } else {
+            Node* temp = pai->filhos;
+            while (temp != NULL && temp->prox != arquivo) {
+                temp = temp->prox;
+            }
+            if (temp != NULL) {
+                temp->prox = arquivo->prox;
+            }
+        }
+    }
+
+    free(arquivo); // Liberar a memória do nó do arquivo
+    return novoAtual;
+}
+
+Node* encontraArquivo(Node** pai, Node* no, const char* nome)
+{
+    if (no == NULL) {
+        return NULL;
+    }
+
+    // Procurar o arquivo nos filhos do nó atual
+    Node* temp = no->filhos;
+    while (temp != NULL) {
+        if (temp->tipo == 'a' && strcmp(temp->id, nome) == 0) {
+            *pai = no; // Configurar o pai do arquivo encontrado
+            return temp;
+        }
+        Node* arquivo = encontraArquivo(pai, temp, nome);
+        if (arquivo != NULL) {
+            return arquivo;
+        }
+        temp = temp->prox;
+    }
+
+    return NULL; // Retorna NULL se o arquivo não for encontrado
+}
+
+void imprimirProfundidade(Node* no)
+{
     // Encontrar a raiz da árvore
     Node* raiz = no;
     while (raiz != NULL && raiz->dir_ant != NULL) {
@@ -148,7 +218,8 @@ void imprimirProfundidade(Node* no) {
     imprimirProfundidadeRecursiva(raiz);
 }
 
-void imprimirProfundidadeRecursiva(Node* no) {
+void imprimirProfundidadeRecursiva(Node* no)
+{
     if (no == NULL) return;
 
     // Imprimir o ID do nó
@@ -162,7 +233,8 @@ void imprimirProfundidadeRecursiva(Node* no) {
     }
 }
 
-void mostrar_no(const Node *no) {
+void mostrar_no(const Node *no)
+{
     printf("\n");
     if (no == NULL) {
         printf("Nó nulo\n");
@@ -182,10 +254,10 @@ void mostrar_no(const Node *no) {
 
 
 // Verifica se estamos tentando inserir em um diretorio
-bool verificaInsercao(Node* atual) {
+bool verificaInsercao(Node* atual)
+{
     if (atual == NULL) {
         return false; // Retorna false se o nó atual for NULL
     }
-
     return atual->tipo == 'd'; // Retorna true se for um diretório
 }
