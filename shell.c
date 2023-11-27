@@ -52,7 +52,7 @@ int main() {
             case 'c':
 
                 if (!getting_input(input, &comando, &tipo, nome)) { fail(); break; }
-                // mudar para o nó desejado
+                atual = changeNode(atual, nome);
                 break;
 
                                         // Deletar diretório ou arquivo
@@ -110,3 +110,8 @@ int main() {
                 // printf("NOME: %s\n", nome);
                 // if (tamanho) printf("TAMANHO: %d\n", tamanho);
                 // printf("\n");
+
+/*          
+ *          Problemas conhecidos:
+ * Não podem haver dois nós com mesmo id (nome)
+*/

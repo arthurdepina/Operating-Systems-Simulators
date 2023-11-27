@@ -18,6 +18,8 @@ Node* criarRaiz(const char *id);
 void imprimirProfundidadeRecursiva(Node* no);
 bool inserirArquivo(Node* atual, const char* nome, int size);
 bool inserirDiretorio(Node* atual, const char* nome);
+Node* changeNode(Node* atual, const char* nome);
+Node* buscarNo(Node* no, const char* nome);
 void imprimirProfundidade(Node* no);
 void imprimirProfundidadeRecursiva(Node* no);
 void mostrar_no(const Node *no);
@@ -95,6 +97,45 @@ bool inserirDiretorio(Node* atual, const char* nome)
     }
     return true;
 }
+
+Node* changeNode(Node* atual, const char* nome) {
+    if (atual == NULL || nome == NULL) {
+        return NULL; // Retorna NULL se o nó atual ou o nome for NULL
+    }
+
+    // Subir até a raiz da árvore
+    Node* raiz = atual;
+    while (raiz->dir_ant != NULL) {
+        raiz = raiz->dir_ant;
+    }
+
+    // Chamar a função de busca a partir da raiz
+    return buscarNo(raiz, nome);
+}
+
+Node* buscarNo(Node* no, const char* nome) {
+    if (no == NULL) {
+        return NULL;
+    }
+
+    // Verifica se o nó atual é o que estamos procurando
+    if (strcmp(no->id, nome) == 0) {
+        return no;
+    }
+
+    // Procura nos filhos do nó atual
+    Node* temp = no->filhos;
+    while (temp != NULL) {
+        Node* encontrado = buscarNo(temp, nome);
+        if (encontrado != NULL) {
+            return encontrado;
+        }
+        temp = temp->prox;
+    }
+
+    return NULL; // Retorna NULL se o nó não for encontrado
+}
+
 
 void imprimirProfundidade(Node* no) {
     // Encontrar a raiz da árvore
