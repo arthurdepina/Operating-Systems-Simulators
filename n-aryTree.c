@@ -90,7 +90,7 @@ Node* createNode (const char* name, const char* path, char tipo, Node* dir_ant)
     strcpy(node->id, name);
     strcpy(node->path, path);
     node->tipo = tipo;
-    node->size = 0;  // Você pode adicionar lógica para definir o tamanho aqui.
+    node->size = (tipo == 'a') ? getFileSize(path) : 0;  // Você pode adicionar lógica para definir o tamanho aqui.
     node->dir_ant = dir_ant;
     node->prox = NULL;
     node->filhos = NULL;
@@ -170,7 +170,7 @@ Node* criarRaiz (const char *id)
     return raiz;
 }
 
-bool inserirArquivo(Node* atual, const char* nome, int size)
+bool inserirArquivo (Node* atual, const char* nome, int size)
 {
     if (!verificaInsercao(atual)) return false;
 
@@ -197,7 +197,7 @@ bool inserirArquivo(Node* atual, const char* nome, int size)
     return true;
 }
 
-bool inserirDiretorio(Node* atual, const char* nome)
+bool inserirDiretorio (Node* atual, const char* nome)
 {
     if (!verificaInsercao(atual)) return false;
     Node* novoNo = (Node*)malloc(sizeof(Node));
@@ -221,7 +221,7 @@ bool inserirDiretorio(Node* atual, const char* nome)
     return true;
 }
 
-Node* changeNode(Node* atual, const char* nome)
+Node* changeNode (Node* atual, const char* nome)
 {
     if (atual == NULL || nome == NULL) {
         return NULL; // Retorna NULL se o nó atual ou o nome for NULL
@@ -237,7 +237,7 @@ Node* changeNode(Node* atual, const char* nome)
     return buscarNo(raiz, nome);
 }
 
-Node* buscarNo(Node* no, const char* nome)
+Node* buscarNo (Node* no, const char* nome)
 {
     if (no == NULL) {
         return NULL;
@@ -261,7 +261,7 @@ Node* buscarNo(Node* no, const char* nome)
     return NULL; // Retorna NULL se o nó não for encontrado
 }
 
-Node* deletaArquivo(Node* atual, const char* nome)
+Node* deletaArquivo (Node* atual, const char* nome)
 {
     if (atual == NULL || nome == NULL) {
         return NULL; // Retorna NULL se o nó atual ou o nome for NULL
@@ -304,7 +304,7 @@ Node* deletaArquivo(Node* atual, const char* nome)
     return novoAtual;
 }
 
-Node* encontraArquivo(Node** pai, Node* no, const char* nome)
+Node* encontraArquivo (Node** pai, Node* no, const char* nome)
 {
     if (no == NULL) {
         return NULL;
@@ -327,7 +327,8 @@ Node* encontraArquivo(Node** pai, Node* no, const char* nome)
     return NULL; // Retorna NULL se o arquivo não for encontrado
 }
 
-Node* deletaDiretorio(Node* atual, const char* nomeDoDiretorio) {
+Node* deletaDiretorio (Node* atual, const char* nomeDoDiretorio)
+{
     if (atual == NULL || nomeDoDiretorio == NULL) {
         return NULL; // Retorna NULL se o nó atual ou o nome do diretório for NULL
     }
@@ -383,7 +384,7 @@ Node* deletaDiretorio(Node* atual, const char* nomeDoDiretorio) {
     return novoAtual;
 }
 
-Node* encontraDiretorio(Node** pai, Node* no, const char* nome)
+Node* encontraDiretorio (Node** pai, Node* no, const char* nome)
 {
     if (no == NULL) {
         return NULL;
@@ -416,7 +417,7 @@ void atualizaPathsFilhos ()
     
 }
 
-void imprimirProfundidade(Node* no)
+void imprimirProfundidade (Node* no)
 {
     // Encontrar a raiz da árvore
     Node* raiz = no;
@@ -428,12 +429,16 @@ void imprimirProfundidade(Node* no)
     imprimirProfundidadeRecursiva(raiz);
 }
 
-void imprimirProfundidadeRecursiva(Node* no)
+void imprimirProfundidadeRecursiva (Node* no)
 {
     if (no == NULL) return;
 
     // Imprimir o ID do nó
-    printf("%s\n", no->id);
+    if (no->tipo == 'd') { 
+        printf("%s\n", no->id); 
+    } else {
+        printf("%s %d bytes\n", no->id, no->size);
+    }
 
     // Chamar recursivamente para todos os filhos
     Node* temp = no->filhos;
@@ -445,7 +450,8 @@ void imprimirProfundidadeRecursiva(Node* no)
 
 // Função auxiliar para criar uma nova fila
 
-Queue* createQueue(int capacity) {
+Queue* createQueue (int capacity)
+{
     Queue *queue = (Queue*)malloc(sizeof(Queue));
     queue->capacity = capacity;
     queue->front = queue->size = 0;
@@ -454,15 +460,18 @@ Queue* createQueue(int capacity) {
     return queue;
 }
 
-int isFull(Queue *queue) {
+int isFull (Queue *queue)
+{
     return (queue->size == queue->capacity);
 }
 
-int isEmpty(Queue *queue) {
+int isEmpty (Queue *queue)
+{
     return (queue->size == 0);
 }
 
-void enqueue(Queue *queue, Node *item) {
+void enqueue (Queue *queue, Node *item)
+{
     if (isFull(queue))
         return;
     queue->rear = (queue->rear + 1) % queue->capacity;
@@ -470,7 +479,8 @@ void enqueue(Queue *queue, Node *item) {
     queue->size = queue->size + 1;
 }
 
-Node* dequeue(Queue *queue) {
+Node* dequeue (Queue *queue)
+{
     if (isEmpty(queue))
         return NULL;
     Node *item = queue->items[queue->front];
@@ -480,7 +490,8 @@ Node* dequeue(Queue *queue) {
 }
 
 // Função para encontrar a raiz da árvore
-Node* encontrarRaiz(Node *atual) {
+Node* encontrarRaiz (Node *atual)
+{
     while (atual != NULL && atual->dir_ant != NULL) {
         atual = atual->dir_ant;
     }
@@ -488,7 +499,8 @@ Node* encontrarRaiz(Node *atual) {
 }
 
 // Função para imprimir a árvore em largura
-void imprimirLargura(Node *atual) {
+void imprimirLargura (Node *atual)
+{
     if (atual == NULL) return;
 
     atual = encontrarRaiz(atual);  // Encontrar a raiz da árvore
@@ -500,7 +512,11 @@ void imprimirLargura(Node *atual) {
         Node *current = dequeue(queue);
 
         // Imprimir o nó atual
-        printf("%s\n", current->path);
+        if (current->tipo == 'd') {
+            printf("%s\n", current->path);
+        } else {
+            printf("%s %d bytes\n", current->path, current->size);
+        }
 
         // Adicionar todos os filhos do nó atual na fila
         Node *child = current->filhos;
@@ -514,7 +530,7 @@ void imprimirLargura(Node *atual) {
     free(queue);
 }
 
-void mostrar_no(const Node *no)
+void mostrar_no (const Node *no)
 {
     printf("\n");
     if (no == NULL) {
@@ -535,7 +551,7 @@ void mostrar_no(const Node *no)
 
 
 // Verifica se estamos tentando inserir em um diretorio
-bool verificaInsercao(Node* atual)
+bool verificaInsercao (Node* atual)
 {
     if (atual == NULL) {
         return false; // Retorna false se o nó atual for NULL
@@ -543,7 +559,8 @@ bool verificaInsercao(Node* atual)
     return atual->tipo == 'd'; // Retorna true se for um diretório
 }
 
-void freeTree(Node *root) {
+void freeTree (Node *root)
+{
     if (root == NULL) return;
 
     // Libera recursivamente todos os filhos
@@ -558,7 +575,8 @@ void freeTree(Node *root) {
     free(root);
 }
 
-void freeTreeFromNode(Node *node) {
+void freeTreeFromNode (Node *node)
+{
     if (node == NULL) return;
 
     // Encontrar a raiz da árvore

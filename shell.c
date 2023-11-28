@@ -30,12 +30,12 @@ int main() {
     root_name[strcspn(root_name, "\n")] = 0; // remove o caractere de nova linha
 
     // Preparar o caminho completo para o diretório raiz
-    char root_path[150] = "./";
-    strcat(root_path, root_name);
+    // char root_path[150] = "./";
+    // strcat(root_path, root_name);
     
     // Criar o nó raiz e mapear a estrutura do diretório
-    Node *atual = createNode(root_name, root_path, 'd', NULL);
-    mapDirectory(root_path, atual);
+    Node *atual = createNode(root_name, root_name, 'd', NULL);
+    mapDirectory(root_name, atual);
     printf("Nome da raiz definido como: %s\n", root_name);
 
     show_commands();
@@ -141,6 +141,6 @@ int main() {
 
 /*
  * TODO:
- * [ ] Adicionar o tamanho dos arquivos na exibição da árvore.
- * [ ] Função para liberar memória da árvore após uso
+ * [O] Adicionar o tamanho dos arquivos na exibição da árvore.
+ * [O] Função para liberar memória da árvore após uso
 */
