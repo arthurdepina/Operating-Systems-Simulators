@@ -244,7 +244,7 @@ Node* buscarNo (Node* no, const char* nome)
     }
 
     // Verifica se o nó atual é o que estamos procurando
-    if (strcmp(no->id, nome) == 0) {
+    if (strcmp(no->path, nome) == 0) {
         return no;
     }
 

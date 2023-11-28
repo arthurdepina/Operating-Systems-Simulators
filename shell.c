@@ -73,6 +73,7 @@ int main() {
             case 'c':
 
                 if (!getting_input(input, &comando, &tipo, nome)) { fail(); break; }
+                // Nesse caso nome será o path até o nó a ser excluído
                 atual = changeNode(atual, nome);
                 break;
 
