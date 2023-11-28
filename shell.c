@@ -15,19 +15,27 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <dirent.h>
 #include "n-AryTree.c"
 #include "auxiliares.c"
 
 int main() {
-    Node *atual = malloc(sizeof(Node));
+    // Node *atual = malloc(sizeof(Node));
 
     char root_name[100];
     printf("Nome da Raiz?\n");
     printf("> ");
     fgets(root_name, sizeof(root_name), stdin);
     root_name[strcspn(root_name, "\n")] = 0; // remove o caractere de nova linha
+
+    // Preparar o caminho completo para o diretório raiz
+    char root_path[150] = "./";
+    strcat(root_path, root_name);
     
-    atual = criarRaiz(root_name);
+    // Criar o nó raiz e mapear a estrutura do diretório
+    Node *atual = createNode(root_name, root_path, 'd', NULL);
+    mapDirectory(root_path, atual);
     printf("Nome da raiz definido como: %s\n", root_name);
 
     show_commands();
@@ -101,6 +109,7 @@ int main() {
 
                 if (!strcmp(input, "--end")) {
                     printf("\nPrograma finalizado.\n\n");
+                    freeTreeFromNode(atual);
                     return 0;
                 } else if (!strcmp(input, "--help")) {
                     show_commands();
@@ -114,15 +123,9 @@ int main() {
                 break;
         }
     }
+    freeTreeFromNode(atual);
     return 0;
 }
-
-                // printf("\n");
-                // printf("COMANDO: %c\n", comando);
-                // printf("TIPO: %c\n", tipo);
-                // printf("NOME: %s\n", nome);
-                // if (tamanho) printf("TAMANHO: %d\n", tamanho);
-                // printf("\n");
 
 /*          
  *                  Problemas conhecidos:
@@ -134,4 +137,10 @@ int main() {
  *      Talvez compense usar listas nos paths. Não vou perder tempo
  *      com isso por agora porque o enunciado nao pede para deletar
  *      diretórios.
+*/
+
+/*
+ * TODO:
+ * [ ] Adicionar o tamanho dos arquivos na exibição da árvore.
+ * [ ] Função para liberar memória da árvore após uso
 */

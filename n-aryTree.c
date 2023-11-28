@@ -2,16 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <sys/stat.h>
+#include <dirent.h>
 
 
 typedef struct Node {
-    char id[256];
-    char path[1024];
-    char tipo;
-    int size;
-    struct Node *dir_ant;
-    struct Node *prox;
-    struct Node *filhos;
+    char id[256]; // nome do diretorio ou arquivo
+    char path[1024]; // caminho até esse diretório ou arquivo
+    char tipo; // 'a' para arquivo, 'd' para diretório
+    int size; // tamanho em KB (necessário APENAS para arquivo)
+    struct Node *dir_ant; // diretório anterior
+    struct Node *prox; // próximo arquivo ou diretório
+    struct Node *filhos; // lista de diretórios ou arquivos a partir do corrente
 } Node;
 
 
@@ -70,9 +72,84 @@ void mostrar_no(const Node *no);
 
 bool verificaInsercao(Node* atual);
 
+Node* createNode(const char* name, const char* path, char tipo, Node* dir_ant);
+
+void mapDirectory(const char* basePath, Node* parent);
+
+long getFileSize(const char *filename);
+
+void freeTreeFromNode(Node *node);
+
+void freeTree(Node *root);
 
 
-Node* criarRaiz(const char *id) {
+
+Node* createNode (const char* name, const char* path, char tipo, Node* dir_ant)
+{
+    Node* node = (Node*)malloc(sizeof(Node));
+    strcpy(node->id, name);
+    strcpy(node->path, path);
+    node->tipo = tipo;
+    node->size = 0;  // Você pode adicionar lógica para definir o tamanho aqui.
+    node->dir_ant = dir_ant;
+    node->prox = NULL;
+    node->filhos = NULL;
+    return node;
+}
+
+void mapDirectory (const char* basePath, Node* parent)
+{
+    char path[1024];
+    struct dirent *dp;
+    DIR *dir = opendir(basePath);
+
+    if (!dir)
+        return; // Não foi possível abrir o diretório.
+
+    Node* lastChild = NULL;
+
+    while ((dp = readdir(dir)) != NULL) {
+        if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) {
+            sprintf(path, "%s/%s", basePath, dp->d_name);
+
+            struct stat statbuf;
+            if (stat(path, &statbuf) != 0)
+                continue; // Erro ao obter informações do arquivo/diretório.
+
+            char tipo = S_ISDIR(statbuf.st_mode) ? 'd' : 'a';
+            Node* newNode = createNode(dp->d_name, path, tipo, parent);
+
+            if (tipo == 'd') {
+                // Mapear subdiretório.
+                mapDirectory(path, newNode);
+            }
+
+            if (lastChild == NULL) {
+                parent->filhos = newNode;
+            } else {
+                lastChild->prox = newNode;
+            }
+            lastChild = newNode;
+        }
+    }
+
+    closedir(dir);
+}
+
+long getFileSize (const char *filename)
+{
+    struct stat st;
+
+    if (stat(filename, &st) == 0) {
+        return st.st_size; // Retorna o tamanho do arquivo em bytes.
+    } else {
+        perror("Erro ao obter o tamanho do arquivo");
+        return -1; // Retorna -1 em caso de erro.
+    }
+}
+
+Node* criarRaiz (const char *id)
+{
     Node *raiz = malloc(sizeof(Node));
     if (raiz == NULL) {
         printf("Erro ao alocar memória para a raiz\n");
@@ -465,3 +542,32 @@ bool verificaInsercao(Node* atual)
     }
     return atual->tipo == 'd'; // Retorna true se for um diretório
 }
+
+void freeTree(Node *root) {
+    if (root == NULL) return;
+
+    // Libera recursivamente todos os filhos
+    Node *child = root->filhos;
+    while (child != NULL) {
+        Node *nextChild = child->prox;
+        freeTree(child); // Chama a função recursivamente para o filho
+        child = nextChild;
+    }
+
+    // Libera o nó atual
+    free(root);
+}
+
+void freeTreeFromNode(Node *node) {
+    if (node == NULL) return;
+
+    // Encontrar a raiz da árvore
+    Node *root = node;
+    while (root->dir_ant != NULL) {
+        root = root->dir_ant;
+    }
+
+    // Começa a liberação da árvore a partir da raiz encontrada
+    freeTree(root);
+}
+
