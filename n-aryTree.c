@@ -313,7 +313,7 @@ Node* encontraArquivo (Node** pai, Node* no, const char* nome)
     // Procurar o arquivo nos filhos do nó atual
     Node* temp = no->filhos;
     while (temp != NULL) {
-        if (temp->tipo == 'a' && strcmp(temp->id, nome) == 0) {
+        if (temp->tipo == 'a' && strcmp(temp->path, nome) == 0) {
             *pai = no; // Configurar o pai do arquivo encontrado
             return temp;
         }

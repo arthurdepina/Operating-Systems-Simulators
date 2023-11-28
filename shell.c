@@ -80,7 +80,7 @@ int main() {
             case 'd':
 
                 if (!getting_input(input, &comando, &tipo, nome)) { fail(); break; }
-                if (tamanho) printf("TAMANHO: %d\n", tamanho);
+                // Nesse caso nome será o path até o nó a ser excluído
                 printf("\n");
                 if (tipo == 'd') {
                     alteraPaths(atual, nome);
