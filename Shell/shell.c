@@ -1,16 +1,16 @@
-/***********************************************************
- * 
- *                  Simulador de Shell
- *
- *      Arthur de Pina Balduino Leitão    - 32207840
- *      Cesar Hideki Imai                 - 32255659
- *      David Varão Lima Bentes Pessoa    - 32253133
- *      João Victor Dallapé Madeira       - 32209592
- *      Luiz Henrique Bonilha Pasquinelli - 32224419
- * 
- * github.com/arthurdepina/Sistemas-Operacionais-Trabalho
- *     https://replit.com/@arthurdepina/Trabalho-SO-2
- * 
+/**********************************************************
+ *                                                        *
+ *                   Simulador de Shell                   *
+ *                                                        *
+ *      Arthur de Pina Balduino Leitão    - 32207840      *
+ *      Cesar Hideki Imai                 - 32255659      *
+ *      David Varão Lima Bentes Pessoa    - 32253133      *
+ *      João Victor Dallapé Madeira       - 32209592      *
+ *      Luiz Henrique Bonilha Pasquinelli - 32224419      *
+ *                                                        *
+ * github.com/arthurdepina/Sistemas-Operacionais-Trabalho *
+ *     https://replit.com/@arthurdepina/Trabalho-SO-2     *
+ *                                                        *
 ***********************************************************/
 
 #include <stdio.h>
